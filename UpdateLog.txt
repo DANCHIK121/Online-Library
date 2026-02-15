@@ -1,0 +1,6 @@
+Updates of release 0.1:
+1) Created README.md file.
+
+2) Created Update log file.
+
+3) Created .gitignore file.
