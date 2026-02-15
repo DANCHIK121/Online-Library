@@ -12,5 +12,6 @@ urlpatterns = [
     path("registration_page/", views.register_page, name="registration"),
 
     # Handlers
+    path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
 ]

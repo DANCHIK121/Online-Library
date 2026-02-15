@@ -2,6 +2,8 @@ import re
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import authenticate, login as auth_login
 
 # Render pages
 def home_page(request):
@@ -14,6 +16,7 @@ def login_page(request):
     return render(request, "LoginPage.html")
 
 # Handlers for pages work
+@csrf_protect
 def register(request):
     """Обработка регистрации нового пользователя"""
     if request.method == 'POST':
@@ -102,6 +105,64 @@ def register(request):
 
     return render(request, 'RegisterPage.html')
 
+@csrf_protect
+def login(request):
+    """Обработка входа пользователя"""
+    if request.method == 'POST':
+        # Getting data from the form
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        remember_me = request.POST.get('remember_me') == 'on'
+
+        # Data validation
+        errors = []
+
+        # Checking required fields
+        if not all([email, password]):
+            errors.append("Все обязательные поля должны быть заполнены")
+
+        # Password verification
+        if len(password) < 8:
+            errors.append("Пароль не может содержать миньше 8 символов")
+
+        # Checking email (to see if it is busy)
+        if not User.objects.filter(email=email).exists():
+            errors.append("Пользователь с таким email не найден")
+
+        if errors:
+            # If there are errors, we show them to the user
+            for error in errors:
+                messages.error(request, error)
+            return render(request, 'LoginPage.html', {'form_data': request.POST})
+
+        try:
+            try:
+                user = User.objects.get(email=email)
+                # Authentication
+                authenticated_user = authenticate(request, username=user.username, password=password)
+
+                if authenticated_user is not None:
+                    # User login
+                    auth_login(request, authenticated_user)
+
+                    # Setting up a session
+                    if not remember_me:
+                        request.session.set_expiry(0)  # The session expires when the browser is closed
+
+                    messages.success(request, f'Добро пожаловать, {authenticated_user.username}!')
+                    return redirect('home')
+                else:
+                    messages.error(request, 'Неверный пароль')
+
+            except User.DoesNotExist:
+                messages.error(request, 'Пользователь с таким email не найден')
+
+        except Exception as e:
+            messages.error(request, f'Ошибка при авторизации: {str(e)}')
+
+        return render(request, 'LoginPage.html', {'form_data': request.POST})
+
+    return render(request, 'LoginPage.html')
 
 # def send_welcome_email(email, firstname):
 #     """Отправка приветственного письма"""

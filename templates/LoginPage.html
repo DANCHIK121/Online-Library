@@ -41,7 +41,19 @@
                         </div>
 
                         <!-- Форма входа -->
-                        <form class="login-form">
+                        <form class="login-form" method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <!-- Блок для отображения сообщений -->
+                            {% if messages %}
+                            <div class="messages">
+                                {% for message in messages %}
+                                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                                    {{ message }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+
                             <!-- Поле email/логин -->
                             <div class="form-group">
                                 <label for="email">
@@ -72,7 +84,7 @@
                             <!-- Дополнительные опции -->
                             <div class="form-options">
                                 <label class="checkbox-container">
-                                    <input type="checkbox" checked>
+                                    <input type="checkbox" id="remember_me" name="remember_me" checked>
                                     <span class="checkmark"></span>
                                     <span>Запомнить меня</span>
                                 </label>
