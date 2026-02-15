@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Городская библиотека | Добро пожаловать</title>
+    <!-- Подключение иконки -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Подключение CSS для Django -->
+    <link rel="stylesheet" href="{% static 'css/MainPageStyle.css' %}">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Шапка с кнопкой входа справа -->
+        <header class="header">
+            <div class="container header-container">
+                <div class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <span>Онлайн Библиотека</span>
+                </div>
+                <div class="auth-buttons">
+                    <a href="#" class="btn btn-outline"><i class="fas fa-user-plus"></i> Регистрация</a>
+                    <a href="#" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Войти</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Главный экран (Hero) с призывом к действию -->
+        <section class="hero">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <h1>Добро пожаловать в библиотеку</h1>
+                    <p class="hero-subtitle">Тысячи книг ждут вас. Читайте, вдохновляйтесь, открывайте новое.</p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn btn-large btn-primary"><i class="fas fa-search"></i> Начать поиск книг</a>
+                        <a href="#" class="btn btn-large btn-outline"><i class="fas fa-id-card"></i> Оформить читательский билет</a>
+                    </div>
+                    <p class="hero-stats">
+                        <span><i class="fas fa-book"></i> 15 000+ книг</span>
+                        <span><i class="fas fa-users"></i> 3 200 читателей</span>
+                        <span><i class="fas fa-calendar"></i> С 1958 года</span>
+                    </p>
+                </div>
+                <div class="hero-image">
+                    <i class="fas fa-book-reader"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Блок "О библиотеке" (кратко) -->
+        <section class="about">
+            <div class="container">
+                <h2 class="section-title">О нашей библиотеке</h2>
+                <div class="about-grid">
+                    <div class="about-card">
+                        <i class="fas fa-globe"></i>
+                        <h3>Электронный каталог</h3>
+                        <p>Ищите книги по названию, автору или жанру. Всегда актуальная информация о наличии.</p>
+                    </div>
+                    <div class="about-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>Личный кабинет</h3>
+                        <p>Следите за сроком возврата, продлевайте книги онлайн, получайте уведомления.</p>
+                    </div>
+                    <div class="about-card">
+                        <i class="fas fa-gift"></i>
+                        <h3>Бесплатно</h3>
+                        <p>100% бесплатное обслуживание для всех жителей города. Нужен только паспорт.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Новинки книг (главный блок) -->
+        <section class="new-arrivals">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-star"></i> Новые поступления</h2>
+                    <a href="#" class="view-all">Смотреть все новинки <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="books-grid">
+                    <!-- Карточка книги 1 -->
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="book-info">
+                            <h3>Мастер и Маргарита</h3>
+                            <p class="author">Михаил Булгаков</p>
+                            <p class="description">Великий роман о любви, дьяволе и Москве. Новое иллюстрированное издание.</p>
+                            <div class="book-meta">
+                                <span class="year">2025</span>
+                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
+                            </div>
+                            <a href="#" class="btn btn-small">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка книги 2 -->
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="book-info">
+                            <h3>1984</h3>
+                            <p class="author">Джордж Оруэлл</p>
+                            <p class="description">Культовая антиутопия о тотальном контроле. Юбилейное издание.</p>
+                            <div class="book-meta">
+                                <span class="year">2024</span>
+                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
+                            </div>
+                            <a href="#" class="btn btn-small">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка книги 3 -->
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="book-info">
+                            <h3>Маленький принц</h3>
+                            <p class="author">Антуан де Сент-Экзюпери</p>
+                            <p class="description">Новый перевод с оригинальными иллюстрациями автора.</p>
+                            <div class="book-meta">
+                                <span class="year">2025</span>
+                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
+                            </div>
+                            <a href="#" class="btn btn-small">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка книги 4 -->
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="book-info">
+                            <h3>Преступление и наказание</h3>
+                            <p class="author">Фёдор Достоевский</p>
+                            <p class="description">Подарочное издание с комментариями и статьями.</p>
+                            <div class="book-meta">
+                                <span class="year">2024</span>
+                                <span class="status limited"><i class="fas fa-hourglass-half"></i> Осталось 2 экз.</span>
+                            </div>
+                            <a href="#" class="btn btn-small">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вторая строка новинок -->
+                <div class="books-grid second-row">
+                    <!-- Карточка книги 5 -->
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="book-info">
+                            <h3>Тихий Дон</h3>
+                            <p class="author">Михаил Шолохов</p>
+                            <p class="description">Роман-эпопея в двух томах. Новое оформление.</p>
+                            <div class="book-meta">
+                                <span class="year">2025</span>
+                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
+                            </div>
+                            <a href="#" class="btn btn-small">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка книги 6 -->
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="book-info">
+                            <h3>Гарри Поттер и философский камень</h3>
+                            <p class="author">Дж. К. Роулинг</p>
+                            <p class="description">Юбилейное издание с иллюстрациями.</p>
+                            <div class="book-meta">
+                                <span class="year">2025</span>
+                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
+                            </div>
+                            <a href="#" class="btn btn-small">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка книги 7 -->
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="book-info">
+                            <h3>Сто лет одиночества</h3>
+                            <p class="author">Габриэль Гарсиа Маркес</p>
+                            <p class="description">Легендарный роман магического реализма.</p>
+                            <div class="book-meta">
+                                <span class="year">2024</span>
+                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
+                            </div>
+                            <a href="#" class="btn btn-small">Подробнее</a>
+                        </div>
+                    </div>
+
+                    <!-- Карточка книги 8 -->
+                    <div class="book-card">
+                        <div class="book-cover">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="book-info">
+                            <h3>Убить пересмешника</h3>
+                            <p class="author">Харпер Ли</p>
+                            <p class="description">Пулитцеровская премия. Новый перевод.</p>
+                            <div class="book-meta">
+                                <span class="year">2025</span>
+                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
+                            </div>
+                            <a href="#" class="btn btn-small">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция с преимуществами и призывом зарегистрироваться -->
+        <section class="cta-section">
+            <div class="container cta-container">
+                <div class="cta-content">
+                    <h2>Станьте нашим читателем</h2>
+                    <p>Всего 5 минут — и вы сможете бронировать книги, продлевать срок и получать персональные рекомендации.</p>
+                    <a href="#" class="btn btn-large btn-primary"><i class="fas fa-id-card"></i> Оформить онлайн</a>
+                    <p class="small">Нужен только паспорт</p>
+                </div>
+                <div class="cta-image">
+                    <i class="fas fa-smile"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Подвал -->
+        <footer class="footer">
+            <div class="container footer-container">
+                <div class="footer-info">
+                    <p>© 2026 Онлайн Библиотека.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">О библиотеке</a>
+                    <a href="#">Правила</a>
+                    <a href="#">Контакты</a>
+                    <a href="#"><i class="fab fa-vk"></i></a>
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
