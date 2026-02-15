@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя библиотека | Личный кабинет</title>
+    <!-- Подключение иконки -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Подключение CSS для Django -->
+    <link rel="stylesheet" href="{% static 'css/PersonalAccountPageStyle.css' %}">
+    <!-- Подключение Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Шапка для читателя (упрощенная) -->
+        <header class="header">
+            <div class="container header-container">
+                <div class="logo">
+                    <i class="fas fa-book-reader"></i>
+                    <span>Читательский билет</span>
+                </div>
+                <nav class="nav">
+                    <ul>
+                        <li><a href="#" class="active">Главная</a></li>
+                        <li><a href="#">Каталог</a></li>
+                        <li><a href="#">Мои книги</a></li>
+                        <li><a href="#">История</a></li>
+                    </ul>
+                </nav>
+                <div class="user-profile-mini">
+                    <span class="user-name">Анна Петрова</span>
+                    <div class="avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <!-- Приветствие пользователя -->
+                <div class="welcome-block">
+                    <h1>Здравствуйте, Анна! <i class="fas fa-hand-peace"></i></h1>
+                    <p>Ваш читательский билет № <strong>12845</strong> действует до 31.12.2026</p>
+                </div>
+
+                <!-- Быстрый поиск для читателя -->
+                <div class="search-section">
+                    <h2><i class="fas fa-search"></i> Поиск книг в библиотеке</h2>
+                    <div class="search-container">
+                        <div class="search-bar">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" placeholder="Название, автор или жанр...">
+                            <button class="btn btn-primary">Искать</button>
+                        </div>
+                        <div class="filter-tags">
+                            <span class="filter-tag active">Все</span>
+                            <span class="filter-tag">Художественная</span>
+                            <span class="filter-tag">Научная</span>
+                            <span class="filter-tag">Детская</span>
+                            <span class="filter-tag">Учебная</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Основной контент: Мои книги и рекомендации -->
+                <div class="content-grid">
+                    <!-- Левая колонка: Книги на руках -->
+                    <div class="my-books-section">
+                        <div class="section-header">
+                            <h2><i class="fas fa-book-open"></i> Книги на руках</h2>
+                            <span class="badge-count">3 книги</span>
+                        </div>
+
+                        <!-- Карточка книги (выданной) -->
+                        <div class="book-card">
+                            <div class="book-cover">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="book-info">
+                                <h3>Преступление и наказание</h3>
+                                <p class="book-author">Фёдор Достоевский</p>
+                                <div class="book-meta">
+                                    <span><i class="far fa-calendar"></i> Взята: 01.02.2025</span>
+                                    <span><i class="far fa-clock"></i> Срок: до 15.02.2025</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 70%;"></div>
+                                </div>
+                                <span class="days-left">Осталось 5 дней</span>
+                            </div>
+                            <button class="btn-renew">
+                                <i class="fas fa-redo-alt"></i> Продлить
+                            </button>
+                        </div>
+
+                        <!-- Карточка книги (просрочка) -->
+                        <div class="book-card overdue">
+                            <div class="book-cover">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="book-info">
+                                <h3>Анна Каренина</h3>
+                                <p class="book-author">Лев Толстой</p>
+                                <div class="book-meta">
+                                    <span><i class="far fa-calendar"></i> Взята: 15.01.2025</span>
+                                    <span><i class="far fa-clock"></i> Срок: до 29.01.2025</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill overdue-fill" style="width: 100%;"></div>
+                                </div>
+                                <span class="days-overdue">Просрочка 2 дня</span>
+                            </div>
+                            <button class="btn-renew warning">
+                                <i class="fas fa-exclamation-triangle"></i> Срочно вернуть
+                            </button>
+                        </div>
+
+                        <!-- Карточка книги -->
+                        <div class="book-card">
+                            <div class="book-cover">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="book-info">
+                                <h3>Мастер и Маргарита</h3>
+                                <p class="book-author">Михаил Булгаков</p>
+                                <div class="book-meta">
+                                    <span><i class="far fa-calendar"></i> Взята: 05.02.2025</span>
+                                    <span><i class="far fa-clock"></i> Срок: до 19.02.2025</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 30%;"></div>
+                                </div>
+                                <span class="days-left">Осталось 12 дней</span>
+                            </div>
+                            <button class="btn-renew">
+                                <i class="fas fa-redo-alt"></i> Продлить
+                            </button>
+                        </div>
+
+                        <a href="#" class="btn-link">Смотреть всю историю <i class="fas fa-arrow-right"></i></a>
+                    </div>
+
+                    <!-- Правая колонка: Рекомендации и уведомления -->
+                    <div class="right-sidebar">
+                        <!-- Блок профиля читателя -->
+                        <div class="profile-card">
+                            <div class="profile-header">
+                                <i class="fas fa-id-card"></i>
+                                <h3>Мой профиль</h3>
+                            </div>
+                            <div class="profile-body">
+                                <p><i class="fas fa-envelope"></i> anna.petrova@email.com</p>
+                                <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
+                                <p><i class="fas fa-map-marker-alt"></i> ул. Ленина, 15, кв. 32</p>
+                                <button class="btn-edit">
+                                    <i class="fas fa-edit"></i> Редактировать
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Уведомления (замена админским просрочкам) -->
+                        <div class="notifications-card">
+                            <h3><i class="fas fa-bell"></i> Уведомления</h3>
+                            <div class="notification-item">
+                                <i class="fas fa-info-circle"></i>
+                                <p>Книга "Анна Каренина" просрочена. Пожалуйста, верните её.</p>
+                                <span class="time">2 часа назад</span>
+                            </div>
+                            <div class="notification-item">
+                                <i class="fas fa-check-circle"></i>
+                                <p>Запрос на продление книги "Мастер и Маргарита" одобрен.</p>
+                                <span class="time">вчера</span>
+                            </div>
+                            <div class="notification-item">
+                                <i class="fas fa-gift"></i>
+                                <p>Новая книга в библиотеке: "Гарри Поттер"</p>
+                                <span class="time">3 дня назад</span>
+                            </div>
+                        </div>
+
+                        <!-- Рекомендуемые книги -->
+                        <div class="recommend-card">
+                            <h3><i class="fas fa-thumbs-up"></i> Рекомендуем</h3>
+                            <ul class="recommend-list">
+                                <li>
+                                    <i class="fas fa-chevron-right"></i>
+                                    <span>«1984» Джордж Оруэлл</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-chevron-right"></i>
+                                    <span>«Убить пересмешника» Харпер Ли</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-chevron-right"></i>
+                                    <span>«Три товарища» Эрих Ремарк</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок популярного и новинок -->
+                <div class="bottom-section">
+                    <h2><i class="fas fa-fire"></i> Популярное сейчас</h2>
+                    <div class="popular-carousel">
+                        <div class="popular-item">
+                            <div class="popular-cover"></div>
+                            <p>Война и мир</p>
+                            <small>Толстой</small>
+                        </div>
+                        <div class="popular-item">
+                            <div class="popular-cover"></div>
+                            <p>Мастер и Маргарита</p>
+                            <small>Булгаков</small>
+                        </div>
+                        <div class="popular-item">
+                            <div class="popular-cover"></div>
+                            <p>Идиот</p>
+                            <small>Достоевский</small>
+                        </div>
+                        <div class="popular-item">
+                            <div class="popular-cover"></div>
+                            <p>Портрет Дориана Грея</p>
+                            <small>Уайльд</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Подвал (упрощенный) -->
+        <footer class="footer">
+            <div class="container">
+                <p>© 2026 Онлайн библиотека.</p>
+                <p class="footer-links">
+                    <a href="#">Правила пользования</a> |
+                    <a href="#">Контакты</a> |
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                </p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

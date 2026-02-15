@@ -1,8 +1,10 @@
 Updates of release 0.1:
-1) Created README.md file.
+1) Added Main page. (*)
 
-2) Created Update log file.
+2) Created README.md file.
 
-3) Created .gitignore file.
+3) Created Update log file.
 
-4) Added icon file for site. (*)
+4) Created .gitignore file.
+
+5) Added icon file for site.
