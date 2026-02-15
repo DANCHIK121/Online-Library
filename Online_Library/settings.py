@@ -14,11 +14,11 @@ SECRET_KEY = 'django-insecure-!vb$7)*wue87!1jndlh*x2$d@)kvor%=uep#!up-$8r@x)^ew5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["robustly-gleaming-gazelle.cloudpub.ru"]
+ALLOWED_HOSTS = ["online-library-for-yarik-from-daniil.cloudpub.ru"]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://robustly-gleaming-gazelle.cloudpub.ru',
-    'http://robustly-gleaming-gazelle.cloudpub.ru',
+    'https://online-library-for-yarik-from-daniil.cloudpub.ru/',
+    'http://online-library-for-yarik-from-daniil.cloudpub.ru/',
 ]
 
 CSRF_COOKIE_SECURE = True

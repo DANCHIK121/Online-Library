@@ -1,18 +1,20 @@
 Updates of release 0.1:
 1) Added Main page.
 
-2) Created README.md file.
+2) Added Login page.
 
-3) Created Update log file.
+3) Created README.md file.
 
-4) Created .gitignore file.
+4) Created Update log file.
 
-5) Added Registration page.
+5) Created .gitignore file.
 
-6) Added user registaration.
+6) Added Registration page.
 
-7) Added icon file for site.
+7) Added user registaration.
 
-8) Added Personal account page.
+8) Added icon file for site.
 
-9) Added a link to the website's homepage by clicking the website's logo in the upper-left corner.
+9) Added Personal account page.
+
+10) Added a link to the website's homepage by clicking the website's logo in the upper-left corner.

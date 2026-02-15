@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн Библиотека | Вход</title>
+    <!-- Подключение иконки -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Подключение CSS для Django -->
+    <link rel="stylesheet" href="{% static 'css/LoginPageStyle.css' %}">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Простая шапка с логотипом -->
+        <header class="header">
+            <div class="container header-container">
+                <a href="/home/" class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <span>Онлайн Библиотека</span>
+                </a>
+                <a href="/registration_page/" class="btn btn-outline">
+                    <i class="fas fa-user-plus"></i> Регистрация
+                </a>
+            </div>
+        </header>
+
+        <!-- Основной контент - форма входа -->
+        <main class="main">
+            <div class="container">
+                <div class="login-container">
+                    <!-- Левая колонка с формой -->
+                    <div class="login-card">
+                        <div class="login-header">
+                            <i class="fas fa-user-circle login-icon"></i>
+                            <h1>Добро пожаловать!</h1>
+                            <p>Войдите в свой читательский кабинет</p>
+                        </div>
+
+                        <!-- Форма входа -->
+                        <form class="login-form">
+                            <!-- Поле email/логин -->
+                            <div class="form-group">
+                                <label for="email">
+                                    <i class="fas fa-envelope"></i>
+                                    Электронная почта или номер читательского билета
+                                </label>
+                                <input type="text" id="email" name="email"
+                                       placeholder="example@mail.ru или № 12845"
+                                       required>
+                            </div>
+
+                            <!-- Поле пароль -->
+                            <div class="form-group">
+                                <label for="password">
+                                    <i class="fas fa-lock"></i>
+                                    Пароль
+                                </label>
+                                <div class="password-wrapper">
+                                    <input type="password" id="password" name="password"
+                                           placeholder="Введите пароль"
+                                           required>
+                                    <button type="button" class="toggle-password" onclick="togglePassword()">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Дополнительные опции -->
+                            <div class="form-options">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" checked>
+                                    <span class="checkmark"></span>
+                                    <span>Запомнить меня</span>
+                                </label>
+                                <a href="#" class="forgot-link">Забыли пароль?</a>
+                            </div>
+
+                            <!-- Кнопка входа -->
+                            <button type="submit" class="btn-login">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Войти в кабинет
+                            </button>
+
+                            <!-- Альтернативный вход -->
+                            <div class="alternative-login">
+                                <p class="or-text">или войти через</p>
+                                <div class="social-login">
+                                    <a href="#" class="social-btn google">
+                                        <i class="fab fa-google"></i>
+                                        Google
+                                    </a>
+                                    <a href="#" class="social-btn vk">
+                                        <i class="fab fa-vk"></i>
+                                        VK
+                                    </a>
+                                    <a href="#" class="social-btn gosuslugi">
+                                        <i class="fas fa-id-card"></i>
+                                        Госуслуги
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Ссылка на регистрацию -->
+                        <div class="register-prompt">
+                            <p>Впервые в библиотеке?</p>
+                            <a href="/registration_page/" class="btn-register">
+                                <i class="fas fa-user-plus"></i>
+                                Создать читательский билет
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Правая колонка с информацией -->
+                    <div class="login-info">
+                        <div class="info-card">
+                            <h2>Что такое читательский кабинет?</h2>
+
+                            <div class="features">
+                                <div class="feature">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <div class="feature-text">
+                                        <h3>Поиск и бронирование</h3>
+                                        <p>Находите книги в электронном каталоге и бронируйте их онлайн</p>
+                                    </div>
+                                </div>
+
+                                <div class="feature">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div class="feature-text">
+                                        <h3>Контроль сроков</h3>
+                                        <p>Следите за датами возврата и продлевайте книги удалённо</p>
+                                    </div>
+                                </div>
+
+                                <div class="feature">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-bell"></i>
+                                    </div>
+                                    <div class="feature-text">
+                                        <h3>Уведомления</h3>
+                                        <p>Получайте напоминания о новых поступлениях и сроках возврата</p>
+                                    </div>
+                                </div>
+
+                                <div class="feature">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-history"></i>
+                                    </div>
+                                    <div class="feature-text">
+                                        <h3>История чтения</h3>
+                                        <p>Ведите личный дневник прочитанных книг</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- QR-код для быстрого входа (декоративный) -->
+                            <div class="qr-section">
+                                <div class="qr-code">
+                                    <i class="fas fa-qrcode"></i>
+                                </div>
+                                <div class="qr-text">
+                                    <p><strong>Быстрый вход по QR-коду</strong></p>
+                                    <p>Отсканируйте в мобильном приложении</p>
+                                </div>
+                            </div>
+
+                            <!-- Статистика -->
+                            <div class="login-stats">
+                                <div class="stat">
+                                    <span class="stat-value">3 245</span>
+                                    <span class="stat-label">активных читателей</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-value">127</span>
+                                    <span class="stat-label">книг выдано сегодня</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Простой подвал -->
+        <footer class="footer">
+            <div class="container footer-container">
+                <p>© 2026 Онлайн Библиотека.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript для показа/скрытия пароля -->
+    <script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleButton = document.querySelector('.toggle-password i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleButton.classList.remove('fa-eye');
+                toggleButton.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleButton.classList.remove('fa-eye-slash');
+                toggleButton.classList.add('fa-eye');
+            }
+        }
+    </script>
+</body>
+</html>

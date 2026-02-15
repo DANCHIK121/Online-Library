@@ -1,16 +1,19 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
-# from django.core.mail import send_mail
-from django.contrib.auth.models import User
-# from django.contrib.auth import login
 import re
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
 
+# Render pages
 def home_page(request):
     return render(request, "MainPage.html")
 
 def register_page(request):
     return render(request, "RegisterPage.html")
 
+def login_page(request):
+    return render(request, "LoginPage.html")
+
+# Handlers for pages work
 def register(request):
     """Обработка регистрации нового пользователя"""
     if request.method == 'POST':
