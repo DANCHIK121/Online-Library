@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-!vb$7)*wue87!1jndlh*x2$d@)kvor%=uep#!up-$8r@x)^ew5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["robustly-gleaming-gazelle.cloudpub.ru"]
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
