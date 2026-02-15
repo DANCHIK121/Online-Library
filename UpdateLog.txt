@@ -9,6 +9,10 @@ Updates of release 0.1:
 
 5) Added Registration page.
 
-6) Added icon file for site.
+6) Added user registaration. (*)
 
-7) Added Personal account page.
+7) Added icon file for site.
+
+8) Added Personal account page.
+
+9) Added a link to the website's homepage by clicking the website's logo in the upper-left corner.
