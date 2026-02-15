@@ -9,7 +9,7 @@ Updates of release 0.1:
 
 5) Added Registration page.
 
-6) Added user registaration. (*)
+6) Added user registaration.
 
 7) Added icon file for site.
 

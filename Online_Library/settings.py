@@ -16,6 +16,17 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["robustly-gleaming-gazelle.cloudpub.ru"]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://robustly-gleaming-gazelle.cloudpub.ru',
+    'http://robustly-gleaming-gazelle.cloudpub.ru',
+]
+
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
