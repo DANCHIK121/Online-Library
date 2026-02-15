@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация | Онлайн библиотека</title>
+    <!-- Подключение иконки -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Подключение CSS для Django -->
+    <link rel="stylesheet" href="{% static 'css/RegisterPageStyle.css' %}">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Шапка с логотипом и ссылкой на вход -->
+        <header class="header">
+            <div class="container header-container">
+                <a href="welcome.html" class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <span>Онлайн библиотека</span>
+                </a>
+                <div class="auth-link">
+                    <span>Уже есть аккаунт?</span>
+                    <a href="#" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Войти</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Основной контент - форма регистрации -->
+        <main class="main">
+            <div class="container">
+                <div class="register-container">
+                    <div class="register-card">
+                        <div class="register-header">
+                            <i class="fas fa-user-plus register-icon"></i>
+                            <h1>Регистрация читательского билета</h1>
+                            <p>Заполните форму, чтобы получить доступ к электронному каталогу</p>
+                        </div>
+
+                        <!-- Прогресс-бар регистрации (опционально) -->
+                        <div class="progress-steps">
+                            <div class="step active">
+                                <span class="step-number">1</span>
+                                <span class="step-label">Личные данные</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">2</span>
+                                <span class="step-label">Контактная информация</span>
+                            </div>
+                            <div class="step">
+                                <span class="step-number">3</span>
+                                <span class="step-label">Подтверждение</span>
+                            </div>
+                        </div>
+
+                        <!-- Форма регистрации -->
+                        <form class="register-form">
+                            <!-- Блок 1: Личные данные -->
+                            <div class="form-section">
+                                <h2><i class="fas fa-user"></i> Личные данные</h2>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="lastname">Фамилия <span class="required">*</span></label>
+                                        <input type="text" id="lastname" name="lastname" placeholder="Иванов" required>
+                                        <i class="fas fa-user input-icon"></i>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="firstname">Имя <span class="required">*</span></label>
+                                        <input type="text" id="firstname" name="firstname" placeholder="Иван" required>
+                                        <i class="fas fa-user input-icon"></i>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="patronymic">Отчество</label>
+                                        <input type="text" id="patronymic" name="patronymic" placeholder="Иванович">
+                                        <i class="fas fa-user input-icon"></i>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="birthdate">Дата рождения <span class="required">*</span></label>
+                                        <input type="date" id="birthdate" name="birthdate" required>
+                                        <i class="fas fa-calendar input-icon"></i>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="passport">Серия и номер паспорта <span class="required">*</span></label>
+                                    <input type="text" id="passport" name="passport" placeholder="4510 123456" required>
+                                    <i class="fas fa-id-card input-icon"></i>
+                                    <small class="form-hint">Только цифры, без пробелов</small>
+                                </div>
+                            </div>
+
+                            <!-- Блок 2: Контактная информация -->
+                            <div class="form-section">
+                                <h2><i class="fas fa-address-book"></i> Контактная информация</h2>
+
+                                <div class="form-group">
+                                    <label for="email">Электронная почта <span class="required">*</span></label>
+                                    <input type="email" id="email" name="email" placeholder="ivan.ivanov@example.com" required>
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <small class="form-hint">На этот адрес будут приходить уведомления</small>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="phone">Телефон <span class="required">*</span></label>
+                                        <input type="tel" id="phone" name="phone" placeholder="+7 (999) 123-45-67" required>
+                                        <i class="fas fa-phone input-icon"></i>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="alternate_phone">Доп. телефон</label>
+                                        <input type="tel" id="alternate_phone" name="alternate_phone" placeholder="+7 (999) 765-43-21">
+                                        <i class="fas fa-phone-alt input-icon"></i>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="address">Адрес проживания <span class="required">*</span></label>
+                                    <textarea id="address" name="address" placeholder="г. Москва, ул. Тверская, д. 15, кв. 32" rows="3" required></textarea>
+                                    <i class="fas fa-map-marker-alt textarea-icon"></i>
+                                </div>
+                            </div>
+
+                            <!-- Блок 3: Пароль и соглашения -->
+                            <div class="form-section">
+                                <h2><i class="fas fa-lock"></i> Безопасность</h2>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="password">Пароль <span class="required">*</span></label>
+                                        <input type="password" id="password" name="password" placeholder="Минимум 8 символов" required>
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <div class="password-strength">
+                                            <div class="strength-bar"></div>
+                                            <div class="strength-bar"></div>
+                                            <div class="strength-bar"></div>
+                                            <span class="strength-text">Средний</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="confirm_password">Подтверждение пароля <span class="required">*</span></label>
+                                        <input type="password" id="confirm_password" name="confirm_password" placeholder="Введите пароль ещё раз" required>
+                                        <i class="fas fa-lock input-icon"></i>
+                                    </div>
+                                </div>
+
+                                <div class="checkbox-group">
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" id="newsletter" checked>
+                                        <span class="checkmark"></span>
+                                        <span>Получать новости о новых поступлениях</span>
+                                    </label>
+
+                                    <label class="checkbox-container">
+                                        <input type="checkbox" id="agreement" required>
+                                        <span class="checkmark"></span>
+                                        <span>Я согласен с <a href="#">правилами пользования библиотекой</a> и даю согласие на обработку персональных данных <span class="required">*</span></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Кнопки отправки -->
+                            <div class="form-actions">
+                                <button type="reset" class="btn btn-secondary">Очистить форму</button>
+                                <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+                            </div>
+                        </form>
+
+                        <!-- Альтернативный вход -->
+                        <div class="social-register">
+                            <p>Или зарегистрируйтесь через</p>
+                            <div class="social-buttons">
+                                <a href="#" class="social-btn google">
+                                    <i class="fab fa-google"></i>
+                                </a>
+                                <a href="#" class="social-btn vk">
+                                    <i class="fab fa-vk"></i>
+                                </a>
+                                <a href="#" class="social-btn telegram">
+                                    <i class="fab fa-telegram"></i>
+                                </a>
+                                <a href="#" class="social-btn gosuslugi">
+                                    <i class="fas fa-id-card"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Боковая панель с преимуществами -->
+                    <div class="benefits-sidebar">
+                        <div class="benefits-card">
+                            <h3><i class="fas fa-gift"></i> Преимущества регистрации</h3>
+                            <ul class="benefits-list">
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Бронирование книг онлайн</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Продление срока возврата</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Уведомления о новых поступлениях</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>История прочитанных книг</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Персональные рекомендации</span>
+                                </li>
+                            </ul>
+
+                            <div class="testimonial">
+                                <i class="fas fa-quote-left"></i>
+                                <p>Зарегистрировалась за 3 минуты, теперь всегда вижу, когда нужно вернуть книги и могу продлить онлайн</p>
+                                <div class="testimonial-author">
+                                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Аватар" class="testimonial-avatar">
+                                    <div>
+                                        <strong>Елена Соколова</strong>
+                                        <span>читатель с 2023 года</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="info-box">
+                                <i class="fas fa-info-circle"></i>
+                                <p>После регистрации вы получите электронный читательский билет на указанную почту</p>
+                            </div>
+
+                            <div class="stats-mini">
+                                <div class="stat">
+                                    <span class="stat-number">3 245</span>
+                                    <span class="stat-label">читателей</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="stat-number">15 000+</span>
+                                    <span class="stat-label">книг</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Подвал -->
+        <footer class="footer">
+            <div class="container footer-container">
+                <div class="footer-info">
+                    <p>© 2026 Онлайн библиотека.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Правила регистрации</a>
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Помощь</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
