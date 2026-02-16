@@ -1,9 +1,12 @@
 import re
+import datetime
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.decorators import login_required
 
 # Render pages
 def home_page(request):
@@ -15,7 +18,18 @@ def register_page(request):
 def login_page(request):
     return render(request, "LoginPage.html")
 
+@login_required(login_url='/login/')
+def personal_account_page(request):
+    user = request.user
+    request.session['last_visit'] = str(datetime.datetime.now()).split(".")[0]
+    return render(request, 'PersonalAccountPage.html', {'user': user})
+
 # Handlers for pages work
+def user_logout(request):
+    logout(request)
+    request.session.flush()
+    return redirect('home')
+
 @csrf_protect
 def register(request):
     """Обработка регистрации нового пользователя"""
@@ -143,14 +157,18 @@ def login(request):
 
                 if authenticated_user is not None:
                     # User login
-                    auth_login(request, authenticated_user)
+                    login(request, authenticated_user)
 
                     # Setting up a session
                     if not remember_me:
-                        request.session.set_expiry(0)  # The session expires when the browser is closed
+                        request.session.set_expiry(1209600)  # The session expires when the browser is closed
+                    else:
+                        request.session.set_expiry(0)
 
                     messages.success(request, f'Добро пожаловать, {authenticated_user.username}!')
-                    return redirect('home')
+
+                    # Go to profile
+                    return redirect('profile')
                 else:
                     messages.error(request, 'Неверный пароль')
 

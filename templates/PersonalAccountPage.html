@@ -15,25 +15,39 @@
 </head>
 <body>
     <div class="wrapper">
-        <!-- Шапка для читателя (упрощенная) -->
+        {% if user.is_authenticated %}
+        <!-- Шапка для читателя -->
         <header class="header">
             <div class="container header-container">
-                <div class="logo">
-                    <i class="fas fa-book-reader"></i>
-                    <span>Читательский билет</span>
-                </div>
+                <a href="/home/" class="logo" style="text-decoration: none;">
+                    <i class="fas fa-book-open"></i>
+                    <span>Онлайн Библиотека</span>
+                </a>
                 <nav class="nav">
                     <ul>
-                        <li><a href="#" class="active">Главная</a></li>
+                        <li><a href="{% url 'home' %}" class="active">Главная</a></li>
                         <li><a href="#">Каталог</a></li>
                         <li><a href="#">Мои книги</a></li>
                         <li><a href="#">История</a></li>
                     </ul>
                 </nav>
                 <div class="user-profile-mini">
-                    <span class="user-name">Анна Петрова</span>
-                    <div class="avatar">
-                        <i class="fas fa-user-circle"></i>
+                    <span class="user-name">{{ user.get_full_name|default:user.username }}</span>
+                    <div class="avatar" id="avatarDropdown" style="cursor: pointer;">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="Avatar" class="avatar-img">
+                        {% else %}
+                            <i class="fas fa-user-circle"></i>
+                        {% endif %}
+                    </div>
+                    <!-- Выпадающее меню с кнопкой выхода -->
+                    <div class="dropdown-menu" id="dropdownMenu" style="display: none; position: absolute; top: 60px; right: 20px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-radius: 5px; min-width: 150px; z-index: 1000;">
+                        <form id="logoutForm" method="POST" action="{% url 'logout' %}" style="margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" style="width: 100%; padding: 10px 15px; border: none; background: none; cursor: pointer; text-align: left; color: #333; font-size: 14px;">
+                                <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i> Выйти
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -41,21 +55,30 @@
 
         <main class="main">
             <div class="container">
-                <!-- Приветствие пользователя -->
+                <!-- Приветствие пользователя с данными из сессии -->
                 <div class="welcome-block">
-                    <h1>Здравствуйте, Анна! <i class="fas fa-hand-peace"></i></h1>
-                    <p>Ваш читательский билет № <strong>12845</strong> действует до 31.12.2026</p>
+                    <h1>Здравствуйте, {{ user.first_name|default:user.username }}! <i class="fas fa-hand-peace"></i></h1>
+                    <p>Ваш читательский билет № <strong>{{ user.id|stringformat:"05d" }}</strong>
+                    {% if request.session.ticket_expiry %}
+                        действует до {{ request.session.ticket_expiry }}
+                    {% else %}
+                        действует бессрочно
+                    {% endif %}
+                    </p>
+                    {% if request.session.last_visit %}
+                        <p class="last-visit">Последний визит: {{ request.session.last_visit }}</p>
+                    {% endif %}
                 </div>
 
                 <!-- Быстрый поиск для читателя -->
                 <div class="search-section">
                     <h2><i class="fas fa-search"></i> Поиск книг в библиотеке</h2>
                     <div class="search-container">
-                        <div class="search-bar">
+                        <form action="#" method="GET" class="search-bar">
                             <i class="fas fa-search search-icon"></i>
-                            <input type="text" placeholder="Название, автор или жанр...">
-                            <button class="btn btn-primary">Искать</button>
-                        </div>
+                            <input type="text" name="q" placeholder="Название, автор или жанр..." required>
+                            <button type="submit" class="btn btn-primary">Искать</button>
+                        </form>
                         <div class="filter-tags">
                             <span class="filter-tag active">Все</span>
                             <span class="filter-tag">Художественная</span>
@@ -72,132 +95,125 @@
                     <div class="my-books-section">
                         <div class="section-header">
                             <h2><i class="fas fa-book-open"></i> Книги на руках</h2>
-                            <span class="badge-count">3 книги</span>
+                            <span class="badge-count">{{ borrowed_books_count|default:"0" }} книги</span>
                         </div>
 
-                        <!-- Карточка книги (выданной) -->
-                        <div class="book-card">
-                            <div class="book-cover">
-                                <i class="fas fa-book"></i>
-                            </div>
-                            <div class="book-info">
-                                <h3>Преступление и наказание</h3>
-                                <p class="book-author">Фёдор Достоевский</p>
-                                <div class="book-meta">
-                                    <span><i class="far fa-calendar"></i> Взята: 01.02.2025</span>
-                                    <span><i class="far fa-clock"></i> Срок: до 15.02.2025</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 70%;"></div>
-                                </div>
-                                <span class="days-left">Осталось 5 дней</span>
-                            </div>
-                            <button class="btn-renew">
-                                <i class="fas fa-redo-alt"></i> Продлить
-                            </button>
-                        </div>
-
-                        <!-- Карточка книги (просрочка) -->
-                        <div class="book-card overdue">
-                            <div class="book-cover">
-                                <i class="fas fa-book"></i>
-                            </div>
-                            <div class="book-info">
-                                <h3>Анна Каренина</h3>
-                                <p class="book-author">Лев Толстой</p>
-                                <div class="book-meta">
-                                    <span><i class="far fa-calendar"></i> Взята: 15.01.2025</span>
-                                    <span><i class="far fa-clock"></i> Срок: до 29.01.2025</span>
-                                </div>
-                                <div class="progress-bar">
-                                    <div class="progress-fill overdue-fill" style="width: 100%;"></div>
-                                </div>
-                                <span class="days-overdue">Просрочка 2 дня</span>
-                            </div>
-                            <button class="btn-renew warning">
-                                <i class="fas fa-exclamation-triangle"></i> Срочно вернуть
-                            </button>
-                        </div>
-
+                        {% for book in borrowed_books %}
                         <!-- Карточка книги -->
-                        <div class="book-card">
+                        <div class="book-card {% if book.is_overdue %}overdue{% endif %}">
                             <div class="book-cover">
-                                <i class="fas fa-book"></i>
+                                {% if book.cover %}
+                                    <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+                                {% else %}
+                                    <i class="fas fa-book"></i>
+                                {% endif %}
                             </div>
                             <div class="book-info">
-                                <h3>Мастер и Маргарита</h3>
-                                <p class="book-author">Михаил Булгаков</p>
+                                <h3>{{ book.title }}</h3>
+                                <p class="book-author">{{ book.author }}</p>
                                 <div class="book-meta">
-                                    <span><i class="far fa-calendar"></i> Взята: 05.02.2025</span>
-                                    <span><i class="far fa-clock"></i> Срок: до 19.02.2025</span>
+                                    <span><i class="far fa-calendar"></i> Взята: {{ book.borrowed_date|date:"d.m.Y" }}</span>
+                                    <span><i class="far fa-clock"></i> Срок: до {{ book.due_date|date:"d.m.Y" }}</span>
                                 </div>
                                 <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 30%;"></div>
+                                    <div class="progress-fill {% if book.is_overdue %}overdue-fill{% endif %}"
+                                         style="width: {{ book.progress_percentage }}%;"></div>
                                 </div>
-                                <span class="days-left">Осталось 12 дней</span>
+                                {% if book.is_overdue %}
+                                    <span class="days-overdue">Просрочка {{ book.overdue_days }} дн.</span>
+                                {% else %}
+                                    <span class="days-left">Осталось {{ book.days_left }} дн.</span>
+                                {% endif %}
                             </div>
-                            <button class="btn-renew">
-                                <i class="fas fa-redo-alt"></i> Продлить
-                            </button>
+                            {% if not book.is_overdue %}
+                                <button class="btn-renew" onclick="renewBook({{ book.id }})">
+                                    <i class="fas fa-redo-alt"></i> Продлить
+                                </button>
+                            {% else %}
+                                <button class="btn-renew warning" onclick="returnBook({{ book.id }})">
+                                    <i class="fas fa-exclamation-triangle"></i> Срочно вернуть
+                                </button>
+                            {% endif %}
                         </div>
+                        {% empty %}
+                        <div class="empty-state">
+                            <i class="fas fa-books fa-3x"></i>
+                            <p>У вас пока нет книг на руках</p>
+                        </div>
+                        {% endfor %}
 
+                        <a href="#" class="btn btn-primary">Перейти в каталог</a>
                         <a href="#" class="btn-link">Смотреть всю историю <i class="fas fa-arrow-right"></i></a>
                     </div>
 
-                    <!-- Правая колонка: Рекомендации и уведомления -->
+                    <!-- Правая колонка: Профиль и уведомления -->
                     <div class="right-sidebar">
-                        <!-- Блок профиля читателя -->
+                        <!-- Блок профиля читателя с данными пользователя -->
                         <div class="profile-card">
                             <div class="profile-header">
                                 <i class="fas fa-id-card"></i>
                                 <h3>Мой профиль</h3>
                             </div>
                             <div class="profile-body">
-                                <p><i class="fas fa-envelope"></i> anna.petrova@email.com</p>
-                                <p><i class="fas fa-phone"></i> +7 (999) 123-45-67</p>
-                                <p><i class="fas fa-map-marker-alt"></i> ул. Ленина, 15, кв. 32</p>
-                                <button class="btn-edit">
+                                <p><i class="fas fa-envelope"></i> {{ user.email }}</p>
+                                <p><i class="fas fa-phone"></i> {{ user.phone|default:"Не указан" }}</p>
+                                {% if user.birth_date %}
+                                    <p><i class="fas fa-birthday-cake"></i> {{ user.birth_date|date:"d.m.Y" }}</p>
+                                {% endif %}
+                                <a href="#" class="btn-edit">
                                     <i class="fas fa-edit"></i> Редактировать
-                                </button>
+                                </a>
                             </div>
                         </div>
 
-                        <!-- Уведомления (замена админским просрочкам) -->
+                        <!-- Уведомления из базы данных -->
                         <div class="notifications-card">
-                            <h3><i class="fas fa-bell"></i> Уведомления</h3>
-                            <div class="notification-item">
-                                <i class="fas fa-info-circle"></i>
-                                <p>Книга "Анна Каренина" просрочена. Пожалуйста, верните её.</p>
-                                <span class="time">2 часа назад</span>
-                            </div>
-                            <div class="notification-item">
-                                <i class="fas fa-check-circle"></i>
-                                <p>Запрос на продление книги "Мастер и Маргарита" одобрен.</p>
-                                <span class="time">вчера</span>
-                            </div>
-                            <div class="notification-item">
-                                <i class="fas fa-gift"></i>
-                                <p>Новая книга в библиотеке: "Гарри Поттер"</p>
-                                <span class="time">3 дня назад</span>
-                            </div>
+                            <h3><i class="fas fa-bell"></i> Уведомления
+                                {% if unread_notifications_count %}
+                                    <span class="notification-badge">{{ unread_notifications_count }}</span>
+                                {% endif %}
+                            </h3>
+                            {% for notification in notifications|slice:":3" %}
+                                <div class="notification-item {% if not notification.is_read %}unread{% endif %}"
+                                     data-id="{{ notification.id }}">
+                                    <i class="fas
+                                        {% if notification.notification_type == 'overdue' %}fa-exclamation-circle
+                                        {% elif notification.notification_type == 'renew' %}fa-check-circle
+                                        {% elif notification.notification_type == 'new_book' %}fa-gift
+                                        {% else %}fa-info-circle{% endif %}">
+                                    </i>
+                                    <div class="notification-content">
+                                        <p>{{ notification.message }}</p>
+                                        <span class="time">{{ notification.created_at|timesince }} назад</span>
+                                    </div>
+                                    {% if not notification.is_read %}
+                                        <button class="mark-read" onclick="markNotificationRead({{ notification.id }})">✓</button>
+                                    {% endif %}
+                                </div>
+                            {% empty %}
+                                <div class="empty-notifications">
+                                    <p>Нет новых уведомлений</p>
+                                </div>
+                            {% endfor %}
+                            {% if notifications.count > 3 %}
+                                <a href="{% url '#' %}" class="btn-link-small">Все уведомления</a>
+                            {% endif %}
                         </div>
 
-                        <!-- Рекомендуемые книги -->
+                        <!-- Рекомендуемые книги (из контекста) -->
                         <div class="recommend-card">
                             <h3><i class="fas fa-thumbs-up"></i> Рекомендуем</h3>
                             <ul class="recommend-list">
+                                {% for book in recommended_books %}
                                 <li>
                                     <i class="fas fa-chevron-right"></i>
-                                    <span>«1984» Джордж Оруэлл</span>
+                                    <a href="{% url '#' book.id %}">
+                                        <span>«{{ book.title }}» {{ book.author }}</span>
+                                    </a>
                                 </li>
-                                <li>
-                                    <i class="fas fa-chevron-right"></i>
-                                    <span>«Убить пересмешника» Харпер Ли</span>
-                                </li>
-                                <li>
-                                    <i class="fas fa-chevron-right"></i>
-                                    <span>«Три товарища» Эрих Ремарк</span>
-                                </li>
+                                {% empty %}
+                                <li>Рекомендации скоро появятся</li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -207,32 +223,21 @@
                 <div class="bottom-section">
                     <h2><i class="fas fa-fire"></i> Популярное сейчас</h2>
                     <div class="popular-carousel">
+                        {% for book in popular_books %}
                         <div class="popular-item">
-                            <div class="popular-cover"></div>
-                            <p>Война и мир</p>
-                            <small>Толстой</small>
+                            <div class="popular-cover"
+                                 {% if book.cover %}style="background-image: url('{{ book.cover.url }}')"{% endif %}>
+                            </div>
+                            <p>{{ book.title }}</p>
+                            <small>{{ book.author }}</small>
                         </div>
-                        <div class="popular-item">
-                            <div class="popular-cover"></div>
-                            <p>Мастер и Маргарита</p>
-                            <small>Булгаков</small>
-                        </div>
-                        <div class="popular-item">
-                            <div class="popular-cover"></div>
-                            <p>Идиот</p>
-                            <small>Достоевский</small>
-                        </div>
-                        <div class="popular-item">
-                            <div class="popular-cover"></div>
-                            <p>Портрет Дориана Грея</p>
-                            <small>Уайльд</small>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </main>
 
-        <!-- Подвал (упрощенный) -->
+        <!-- Подвал -->
         <footer class="footer">
             <div class="container">
                 <p>© 2026 Онлайн библиотека.</p>
@@ -243,6 +248,247 @@
                 </p>
             </div>
         </footer>
+
+        {% else %}
+        <!-- Блок для неавторизованных пользователей -->
+        <div class="auth-required">
+            <div class="auth-container">
+                <i class="fas fa-lock fa-4x"></i>
+                <h1>Доступ ограничен</h1>
+                <p>Пожалуйста, войдите в систему для доступа к личному кабинету</p>
+                <div class="auth-buttons">
+                    <a href="{% url 'login' %}" class="btn btn-primary">Войти</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary">Зарегистрироваться</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
+
+    {% if user.is_authenticated %}
+    <!-- JavaScript для работы с уведомлениями и выпадающим меню -->
+    <script>
+    // Функции для уведомлений
+    function markNotificationRead(notificationId) {
+        fetch(`/notifications/${notificationId}/read/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'ok') {
+                const notification = document.querySelector(`[data-id="${notificationId}"]`);
+                notification.classList.remove('unread');
+                notification.querySelector('.mark-read').remove();
+
+                // Обновляем счетчик
+                updateNotificationCount();
+            }
+        });
+    }
+
+    function renewBook(bookId) {
+        fetch(`/books/${bookId}/renew/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message || 'Ошибка при продлении книги');
+            }
+        });
+    }
+
+    function returnBook(bookId) {
+        if (confirm('Подтвердите возврат книги')) {
+            fetch(`/books/${bookId}/return/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            });
+        }
+    }
+
+    function updateNotificationCount() {
+        fetch('/notifications/api/', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            const badge = document.querySelector('.notification-badge');
+            if (badge) {
+                if (data.count > 0) {
+                    badge.textContent = data.count;
+                    badge.style.display = 'inline';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    // Функционал выпадающего меню для аватара
+    document.addEventListener('DOMContentLoaded', function() {
+        const avatar = document.getElementById('avatarDropdown');
+        const dropdown = document.getElementById('dropdownMenu');
+
+        if (avatar && dropdown) {
+            avatar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+                    dropdown.style.display = 'block';
+                } else {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            // Закрытие при клике вне меню
+            document.addEventListener('click', function(e) {
+                if (!avatar.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        }
+    });
+
+    // Проверка новых уведомлений каждые 30 секунд
+    setInterval(updateNotificationCount, 30000);
+    </script>
+
+    <style>
+    /* Дополнительные стили для адаптации */
+    .avatar-img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        background: #f9f9f9;
+        border-radius: 10px;
+        margin: 20px 0;
+    }
+
+    .empty-state i {
+        color: #ccc;
+        margin-bottom: 15px;
+    }
+
+    .notification-item.unread {
+        background: #e3f2fd;
+        border-left: 3px solid #2196f3;
+    }
+
+    .notification-content {
+        flex: 1;
+        margin-left: 10px;
+    }
+
+    .mark-read {
+        background: none;
+        border: none;
+        color: #4caf50;
+        cursor: pointer;
+        font-size: 18px;
+        padding: 5px;
+    }
+
+    .mark-read:hover {
+        color: #45a049;
+    }
+
+    .auth-required {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .auth-container {
+        text-align: center;
+        padding: 40px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+
+    .auth-container i {
+        color: #667eea;
+        margin-bottom: 20px;
+    }
+
+    .auth-buttons {
+        margin-top: 30px;
+    }
+
+    .auth-buttons .btn {
+        margin: 0 10px;
+        padding: 12px 30px;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .btn-secondary:hover {
+        background: #5a6268;
+    }
+
+    .btn-link-small {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+        color: #667eea;
+        text-decoration: none;
+        font-size: 0.9em;
+    }
+
+    .notification-badge {
+        background: #f44336;
+        color: white;
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-size: 0.7em;
+        margin-left: 5px;
+    }
+
+    .last-visit {
+        color: #666;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+    /* Стили для кнопки выхода (минимальные, без изменения общей стилистики) */
+    .dropdown-menu button:hover {
+        background-color: #f5f5f5;
+    }
+    </style>
+    {% endif %}
 </body>
 </html>
