@@ -19,7 +19,7 @@ Updates of release 0.1:
 
 10) Added icon file for site.
 
-11) Added user session logic. (*)
+11) Added user session logic.
 
 12) Added Personal account page.
 

@@ -18,7 +18,7 @@ def register_page(request):
 def login_page(request):
     return render(request, "LoginPage.html")
 
-@login_required(login_url='/login/')
+@login_required(login_url='/login_page/')
 def personal_account_page(request):
     user = request.user
     request.session['last_visit'] = str(datetime.datetime.now()).split(".")[0]
@@ -120,7 +120,7 @@ def register(request):
     return render(request, 'RegisterPage.html')
 
 @csrf_protect
-def login(request):
+def user_login(request):
     """Обработка входа пользователя"""
     if request.method == 'POST':
         # Getting data from the form
