@@ -2,11 +2,13 @@ import re
 import datetime
 from django.contrib import messages
 from django.contrib.auth import logout
-from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
+
+User = get_user_model()
 
 # Render pages
 def home_page(request):
@@ -82,12 +84,16 @@ def register(request):
         try:
             # Creating a user
             username = email  # We use email as username
-            user = User.objects.create(
+            user = User.objects.create_user(
                 username=username,
                 email=email,
                 password=password,
                 first_name=firstname,
-                last_name=lastname
+                last_name=lastname,
+                phone=phone,
+                phone_2=alternate_phone,
+                birthdate=birthdate,
+                patronymic=patronymic,
             )
 
             # Дополнительная информация о пользователе (если есть модель Profile)
@@ -152,6 +158,7 @@ def user_login(request):
         try:
             try:
                 user = User.objects.get(email=email)
+
                 # Authentication
                 authenticated_user = authenticate(request, username=user.username, password=password)
 

@@ -14,6 +14,8 @@ SECRET_KEY = 'django-insecure-!vb$7)*wue87!1jndlh*x2$d@)kvor%=uep#!up-$8r@x)^ew5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+AUTH_USER_MODEL = 'users.CustomUser'
+
 ALLOWED_HOSTS = [
     'online-library-for-yarik-from-daniil.cloudpub.ru',
     'localhost',
@@ -57,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "main",
+    "users",
 ]
 
 MIDDLEWARE = [

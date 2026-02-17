@@ -23,4 +23,8 @@ Updates of release 0.1:
 
 12) Added Personal account page.
 
-13) Added a link to the website's homepage by clicking the website's logo in the upper-left corner.
+13) The users app has been added. (*)
+
+14) Added the display of two user phone numbers on the profile page.
+
+15) Added a link to the website's homepage by clicking the website's logo in the upper-left corner.
