@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн Библиотека | Редактирование профиля</title>
+    <!-- Подключение иконки -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Подключение CSS для Django -->
+    <link rel="stylesheet" href="{% static 'css/PersonalDataPageStyle.css' %}">
+    <!-- Подключение Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        {% if user.is_authenticated %}
+        <!-- Шапка -->
+        <header class="header">
+            <div class="container header-container">
+                <a href="/home/" class="logo" style="text-decoration: none;">
+                    <i class="fas fa-book-open"></i>
+                    <span>Онлайн Библиотека</span>
+                </a>
+                <nav class="nav">
+                    <ul>
+                        <li><a href="{% url 'home' %}">Главная</a></li>
+                        <li><a href="#">Каталог</a></li>
+                        <li><a href="#">Мои книги</a></li>
+                        <li><a href="{% url 'profile' %}" class="active">Профиль</a></li>
+                    </ul>
+                </nav>
+                <div class="user-profile-mini">
+                    <span class="user-name">{{ user.get_full_name|default:user.username }}</span>
+                    <div class="avatar" id="avatarDropdown" style="cursor: pointer;">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="Avatar" class="avatar-img">
+                        {% else %}
+                            <i class="fas fa-user-circle"></i>
+                        {% endif %}
+                    </div>
+                    <!-- Выпадающее меню -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <form id="logoutForm" method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">
+                                <i class="fas fa-sign-out-alt"></i> Выйти
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <!-- Навигация по профилю (хлебные крошки) -->
+                <div class="profile-nav">
+                    <a href="{% url 'profile' %}" class="back-link">
+                        <i class="fas fa-arrow-left"></i> Вернуться к профилю
+                    </a>
+                    <span class="current-page">Редактирование личных данных</span>
+                </div>
+
+                <!-- Заголовок страницы -->
+                <div class="page-header">
+                    <h1><i class="fas fa-user-edit"></i> Редактирование профиля</h1>
+                    <p class="subtitle">Изменяйте свои личные данные в любой момент</p>
+                </div>
+
+                <!-- Основной контент: форма редактирования -->
+                <div class="edit-content-grid">
+                    <!-- Левая колонка: Основная форма -->
+                    <div class="edit-main-section">
+                        <div class="edit-card">
+                            <div class="card-header">
+                                <h2><i class="fas fa-id-card"></i> Основная информация</h2>
+                                <span class="required-hint">* — обязательные поля</span>
+                            </div>
+
+                            <!-- Форма для изменения данных -->
+                            <form class="edit-form" method="POST" enctype="multipart/form-data" id="profileEditForm">
+                                {% csrf_token %}
+
+                                <!-- Блок с сообщением об успехе/ошибке -->
+                                {% if messages %}
+                                <div class="form-messages">
+                                    {% for message in messages %}
+                                    <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                                        <i class="fas
+                                            {% if message.tags == 'success' %}fa-check-circle
+                                            {% elif message.tags == 'error' %}fa-exclamation-circle
+                                            {% else %}fa-info-circle{% endif %}">
+                                        </i>
+                                        {{ message }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+
+                                <!-- Личные данные -->
+                                <div class="form-section">
+                                    <h3>Личные данные</h3>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="id_last_name">
+                                                <i class="fas fa-user"></i> Фамилия
+                                            </label>
+                                            <input type="text" name="last_name" id="id_last_name"
+                                                   value="{{ user.last_name }}"
+                                                   placeholder="Введите фамилию">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_first_name">
+                                                <i class="fas fa-user"></i> Имя *
+                                            </label>
+                                            <input type="text" name="first_name" id="id_first_name"
+                                                   value="{{ user.first_name }}"
+                                                   placeholder="Введите имя" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="id_middle_name">
+                                                <i class="fas fa-user"></i> Отчество
+                                            </label>
+                                            <input type="text" name="middle_name" id="id_middle_name"
+                                                   value="{{ user.patronymic|default:'' }}"
+                                                   placeholder="Введите отчество">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_birth_date">
+                                                <i class="fas fa-birthday-cake"></i> Дата рождения
+                                            </label>
+                                            <input type="date" name="birth_date" id="id_birth_date"
+                                                   value="{{ user.birthdate|date:'Y-m-d' }}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Контактные данные -->
+                                <div class="form-section">
+                                    <h3>Контактные данные</h3>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="id_username">
+                                                <i class="fas fa-at"></i> Логин *
+                                            </label>
+                                            <input type="text" name="username" id="id_username"
+                                                   value="{{ user.username }}"
+                                                   placeholder="Логин" required>
+                                            <small class="field-hint">Используется для входа</small>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_email">
+                                                <i class="fas fa-envelope"></i> Email *
+                                            </label>
+                                            <input type="email" name="email" id="id_email"
+                                                   value="{{ user.email }}"
+                                                   placeholder="example@mail.com" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <label for="id_phone">
+                                                <i class="fas fa-phone"></i> Телефон
+                                            </label>
+                                            <input type="tel" name="phone" id="id_phone"
+                                                   value="{{ user.phone|default:'' }}"
+                                                   placeholder="+7 (999) 123-45-67">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="id_phone_2">
+                                                <i class="fas fa-phone"></i> Телефон
+                                            </label>
+                                            <input type="tel" name="phone" id="id_phone_2"
+                                                   value="{{ user.phone_2|default:'' }}"
+                                                   placeholder="+7 (999) 123-45-67">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Кнопки управления -->
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary" id="saveBtn">
+                                        <i class="fas fa-save"></i> Сохранить изменения
+                                    </button>
+                                    <a href="{% url 'profile' %}" class="btn btn-secondary" id="cancelBtn">
+                                        <i class="fas fa-times"></i> Отмена
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Правая колонка: Аватар и дополнительная информация -->
+                    <div class="edit-sidebar">
+                        <!-- Карточка аватара -->
+                        <div class="avatar-card">
+                            <div class="avatar-large">
+                                {% if user.avatar %}
+                                    <img src="{{ user.avatar.url }}" alt="Avatar" id="avatarPreview">
+                                {% else %}
+                                    <i class="fas fa-user-circle" id="avatarPlaceholder"></i>
+                                {% endif %}
+                            </div>
+                            <h3>{{ user.get_full_name|default:user.username }}</h3>
+
+                            <!-- Форма загрузки аватара -->
+                            <form method="POST" enctype="multipart/form-data" id="avatarForm" class="avatar-upload-form">
+                                {% csrf_token %}
+                                <label for="avatarUpload" class="avatar-upload-label">
+                                    <i class="fas fa-camera"></i> Загрузить фото
+                                </label>
+                                <input type="file" name="avatar" id="avatarUpload" accept="image/*" hidden>
+                                <p class="avatar-hint">JPG, PNG до 2 МБ</p>
+                            </form>
+
+                            {% if user.avatar %}
+                            <button type="button" class="btn-link-danger" id="deleteAvatarBtn">
+                                <i class="fas fa-trash-alt"></i> Удалить фото
+                            </button>
+                            {% endif %}
+                        </div>
+
+                        <!-- Блок смены пароля -->
+                        <div class="password-card">
+                            <h3><i class="fas fa-lock"></i> Безопасность</h3>
+                            <p class="password-note">Для смены пароля перейдите в раздел безопасности</p>
+                            <a href="#" class="btn btn-outline">
+                                <i class="fas fa-key"></i> Изменить пароль
+                            </a>
+                        </div>
+
+                        <!-- Подсказки -->
+                        <div class="tips-card">
+                            <h4><i class="fas fa-lightbulb"></i> Советы</h4>
+                            <ul class="tips-list">
+                                <li><i class="fas fa-check-circle"></i> Указывайте реальный email — на него приходят уведомления о возврате книг</li>
+                                <li><i class="fas fa-check-circle"></i> Телефон может понадобиться для восстановления доступа</li>
+                                <li><i class="fas fa-check-circle"></i> Фото профиля поможет библиотекарю быстрее вас узнать</li>
+                            </ul>
+                        </div>
+
+                        <!-- Дополнительные настройки -->
+                        <div class="extra-settings">
+                            <a href="#" class="setting-link">
+                                <i class="fas fa-bell"></i> Настройки уведомлений
+                            </a>
+                            <a href="#" class="setting-link">
+                                <i class="fas fa-globe"></i> Язык и регион
+                            </a>
+                            <a href="#" class="setting-link">
+                                <i class="fas fa-shield-alt"></i> Конфиденциальность
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Блок подтверждения удаления аккаунта (скрыт по умолчанию) -->
+                <div class="danger-zone" id="dangerZone">
+                    <div class="danger-zone-header">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Зона опасности</h3>
+                    </div>
+                    <p class="danger-text">Удаление аккаунта приведёт к безвозвратной потере всей истории чтения и текущих книг на руках.</p>
+                    <div class="danger-actions">
+                        <button type="button" class="btn btn-danger" id="showDeleteConfirm">
+                            <i class="fas fa-trash-alt"></i> Удалить аккаунт
+                        </button>
+                    </div>
+
+                    <!-- Подтверждение удаления (изначально скрыто) -->
+                    <div class="delete-confirm" id="deleteConfirm" style="display: none;">
+                        <p class="confirm-warning">Вы уверены? Это действие необратимо.</p>
+                        <form method="POST" action="#">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger-confirm">
+                                <i class="fas fa-exclamation-circle"></i> Да, удалить навсегда
+                            </button>
+                            <button type="button" class="btn btn-secondary" id="cancelDelete">
+                                <i class="fas fa-times"></i> Отмена
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Подвал -->
+        <footer class="footer">
+            <div class="container">
+                <p>© 2026 Онлайн библиотека.</p>
+                <p class="footer-links">
+                    <a href="#">Правила пользования</a> |
+                    <a href="#">Контакты</a> |
+                    <a href="#"><i class="fab fa-telegram"></i></a>
+                </p>
+            </div>
+        </footer>
+
+        {% else %}
+        <!-- Блок для неавторизованных пользователей -->
+        <div class="auth-required">
+            <div class="auth-container">
+                <i class="fas fa-lock fa-4x"></i>
+                <h1>Доступ ограничен</h1>
+                <p>Пожалуйста, войдите в систему для редактирования профиля</p>
+                <div class="auth-buttons">
+                    <a href="{% url 'login' %}" class="btn btn-primary">Войти</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary">Зарегистрироваться</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Выпадающее меню аватара
+        const avatar = document.getElementById('avatarDropdown');
+        const dropdown = document.getElementById('dropdownMenu');
+
+        if (avatar && dropdown) {
+            avatar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('show');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!avatar.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        }
+
+        // Предпросмотр аватара
+        const avatarUpload = document.getElementById('avatarUpload');
+        const avatarPreview = document.getElementById('avatarPreview');
+        const avatarPlaceholder = document.getElementById('avatarPlaceholder');
+
+        if (avatarUpload) {
+            avatarUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        if (avatarPreview) {
+                            avatarPreview.src = e.target.result;
+                            avatarPreview.style.display = 'block';
+                            if (avatarPlaceholder) avatarPlaceholder.style.display = 'none';
+                        }
+                        // Автоматическая отправка формы
+                        document.getElementById('avatarForm').submit();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Удаление аватара
+        const deleteAvatarBtn = document.getElementById('deleteAvatarBtn');
+        if (deleteAvatarBtn) {
+            deleteAvatarBtn.addEventListener('click', function() {
+                if (confirm('Удалить фото профиля?')) {
+                    fetch('/profile/delete-avatar/', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}',
+                        }
+                    }).then(() => location.reload());
+                }
+            });
+        }
+
+        // Зона опасности (удаление аккаунта)
+        const showDeleteConfirm = document.getElementById('showDeleteConfirm');
+        const deleteConfirm = document.getElementById('deleteConfirm');
+        const cancelDelete = document.getElementById('cancelDelete');
+        const dangerZone = document.getElementById('dangerZone');
+
+        if (showDeleteConfirm && deleteConfirm) {
+            showDeleteConfirm.addEventListener('click', function() {
+                deleteConfirm.style.display = 'block';
+                showDeleteConfirm.disabled = true;
+            });
+        }
+
+        if (cancelDelete && deleteConfirm) {
+            cancelDelete.addEventListener('click', function() {
+                deleteConfirm.style.display = 'none';
+                if (showDeleteConfirm) showDeleteConfirm.disabled = false;
+            });
+        }
+
+        // Валидация формы перед отправкой
+        const editForm = document.getElementById('profileEditForm');
+        if (editForm) {
+            editForm.addEventListener('submit', function(e) {
+                const username = document.getElementById('id_username');
+                const email = document.getElementById('id_email');
+
+                if (username.value.trim() === '') {
+                    e.preventDefault();
+                    alert('Логин не может быть пустым');
+                    username.focus();
+                    return;
+                }
+
+                if (email.value.trim() === '') {
+                    e.preventDefault();
+                    alert('Email не может быть пустым');
+                    email.focus();
+                    return;
+                }
+
+                // Можно добавить дополнительную валидацию
+            });
+        }
+    });
+    </script>
+    {% endif %}
+</body>
+</html>

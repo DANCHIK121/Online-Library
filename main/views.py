@@ -26,6 +26,10 @@ def personal_account_page(request):
     request.session['last_visit'] = str(datetime.datetime.now()).split(".")[0]
     return render(request, 'PersonalAccountPage.html', {'user': user})
 
+def personal_data_page(request):
+    return render(request, 'PersonalDataPage.html')
+
+
 # Handlers for pages work
 def user_logout(request):
     logout(request)

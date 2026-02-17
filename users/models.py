@@ -26,7 +26,7 @@ class CustomUser(AbstractUser):
     )
 
     patronymic = models.CharField(
-        max_length=30,
+        max_length=20,
         blank=True,
         null=True,
         verbose_name="Отчество"

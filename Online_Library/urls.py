@@ -11,6 +11,7 @@ urlpatterns = [
     path("login_page/", views.login_page, name="login"),
     path("profile_page/", views.personal_account_page, name="profile"),
     path("registration_page/", views.register_page, name="registration"),
+    path("personal_data_page/", views.personal_data_page, name="personal_data_page"),
 
     # Handlers
     path('login/', views.user_login, name='login'),
