@@ -2,6 +2,7 @@ import re
 import datetime
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login
@@ -112,16 +113,16 @@ def register(request):
             # )
 
             # Sending a welcome letter
-            # send_welcome_email(email, firstname)
+            send_welcome_email(email, firstname)
 
             # Automatic login after registration
-            # login(request, user)
+            login(request, user)
 
             # Success Message
             messages.success(request, f'Добро пожаловать, {firstname}! Регистрация прошла успешно.')
 
-            # Перенаправление на страницу читательского билета или главную
-            return redirect('home')  # или 'profile'
+            # Redirection to the reader's ticket page or the main page
+            return redirect('profile')
 
         except Exception as e:
             messages.error(request, f'Ошибка при регистрации: {str(e)}')
@@ -193,23 +194,23 @@ def user_login(request):
 
     return render(request, 'LoginPage.html')
 
-# def send_welcome_email(email, firstname):
-#     """Отправка приветственного письма"""
-#     subject = 'Добро пожаловать в Онлайн библиотеку!'
-#     message = f'''
-#     Здравствуйте, {firstname}!
-#
-#     Благодарим вас за регистрацию в нашей онлайн библиотеке.
-#
-#     Ваш электронный читательский билет доступен в личном кабинете.
-#
-#     С уважением,
-#     Команда Онлайн библиотеки
-#     '''
-#     from_email = 'noreply@library.com'  # Укажите ваш email
-#     recipient_list = [email]
-#
-#     try:
-#         send_mail(subject, message, from_email, recipient_list)
-#     except:
-#         pass
+def send_welcome_email(email, firstname):
+    """Отправка приветственного письма"""
+    subject = 'Добро пожаловать в Онлайн библиотеку!'
+    message = f'''
+    Здравствуйте, {firstname}!
+
+    Благодарим вас за регистрацию в нашей онлайн библиотеке.
+
+    Ваш электронный читательский билет доступен в личном кабинете.
+
+    С уважением,
+    Команда Онлайн библиотеки
+    '''
+    from_email = 'daniil_projects@mail.ru'
+    recipient_list = [email]
+
+    try:
+        send_mail(subject, message, from_email, recipient_list)
+    except:
+        pass

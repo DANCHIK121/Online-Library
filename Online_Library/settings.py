@@ -123,6 +123,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'daniil_projects@mail.ru'
+EMAIL_HOST_PASSWORD = '2IQidKfDNFndoAJQtMyM'
+DEFAULT_FROM_EMAIL = 'daniil_projects@mail.ru'
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
