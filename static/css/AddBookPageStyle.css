@@ -1,0 +1,489 @@
+/* AddBookStyle.css - Стили для страницы добавления книги в админке */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafd;
+    color: #1a2b3e;
+    line-height: 1.5;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* Шапка с кнопками навигации */
+.header {
+    background-color: white;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1f3a5f;
+}
+
+.logo i {
+    color: #3b7a6e;
+    font-size: 2rem;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    padding: 10px 22px;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: 1px solid transparent;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #d0ddee;
+    color: #1f3a5f;
+}
+
+.btn-outline:hover {
+    background: #f0f5fc;
+    border-color: #a5b9d0;
+}
+
+.btn-primary {
+    background: #2b6c5e;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #1f5347;
+}
+
+.btn-large {
+    padding: 14px 32px;
+    font-size: 1.1rem;
+}
+
+/* Хлебные крошки */
+.breadcrumbs {
+    padding: 25px 0 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #7f95b0;
+    font-size: 0.95rem;
+}
+
+.breadcrumbs a {
+    color: #2b6c5e;
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumbs i {
+    font-size: 0.8rem;
+    color: #a5b9d0;
+}
+
+/* Заголовок страницы */
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1a2b3e;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-header h1 i {
+    color: #2b6c5e;
+}
+
+.header-description {
+    color: #5b748b;
+    font-size: 1rem;
+}
+
+/* Контейнер формы */
+.form-container {
+    background: white;
+    border-radius: 30px;
+    border: 1px solid #edf2f7;
+    padding: 40px;
+    margin-bottom: 50px;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+}
+
+/* Секции формы */
+.form-section {
+    margin-bottom: 40px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #eef2f6;
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.form-section .section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #1f3a5f;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-section .section-title i {
+    color: #2b6c5e;
+}
+
+/* Сетка для полей формы */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+}
+
+.form-group {
+    margin-bottom: 5px;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+/* Элементы формы */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #1f3a5f;
+    font-size: 0.95rem;
+}
+
+label i {
+    color: #7b95ad;
+    margin-right: 5px;
+    font-size: 0.9rem;
+}
+
+.required {
+    color: #d14545;
+    font-weight: 600;
+    margin-left: 3px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid #dde3ec;
+    border-radius: 16px;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    color: #1a2b3e;
+    background-color: #f9fcff;
+    transition: all 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #2b6c5e;
+    box-shadow: 0 0 0 3px rgba(43, 108, 94, 0.1);
+    background-color: white;
+}
+
+.form-control::placeholder {
+    color: #a5b9d0;
+    font-weight: 300;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237b95ad' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    padding-right: 50px;
+}
+
+.form-text {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.8rem;
+    color: #7f95b0;
+}
+
+/* Загрузка файлов */
+.file-input-wrapper {
+    position: relative;
+}
+
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.file-input-preview {
+    border: 2px dashed #d0ddee;
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    background-color: #f9fcff;
+    transition: all 0.2s;
+}
+
+.file-input-wrapper:hover .file-input-preview {
+    border-color: #2b6c5e;
+    background-color: #f0f7f5;
+}
+
+.file-input-preview i {
+    font-size: 2.5rem;
+    color: #7b95ad;
+    margin-bottom: 10px;
+}
+
+.file-input-preview span {
+    display: block;
+    font-weight: 500;
+    color: #1f3a5f;
+    margin-bottom: 5px;
+}
+
+.file-input-preview small {
+    color: #7f95b0;
+    font-size: 0.8rem;
+}
+
+/* Чекбоксы */
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 400;
+    margin-bottom: 0;
+    padding: 8px 0;
+}
+
+.checkbox-label input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.checkbox-custom {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 2px solid #d0ddee;
+    border-radius: 6px;
+    position: relative;
+    transition: all 0.1s;
+    flex-shrink: 0;
+}
+
+.checkbox-label input:checked + .checkbox-custom {
+    background: #2b6c5e;
+    border-color: #2b6c5e;
+}
+
+.checkbox-label input:checked + .checkbox-custom::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-label input:focus + .checkbox-custom {
+    box-shadow: 0 0 0 3px rgba(43, 108, 94, 0.2);
+}
+
+.checkbox-text {
+    color: #1f3a5f;
+    font-size: 0.95rem;
+}
+
+/* Кнопки действий формы */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.required-note {
+    margin-top: 20px;
+    color: #7f95b0;
+    font-size: 0.9rem;
+}
+
+/* Подвал */
+.footer {
+    background: white;
+    border-top: 1px solid #eef2f6;
+    padding: 30px 0;
+    margin-top: auto;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-info p {
+    color: #62778e;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.footer-links a {
+    color: #405e7c;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+    color: #2b6c5e;
+}
+
+/* Адаптивность */
+@media (max-width: 900px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+
+    .form-container {
+        padding: 25px;
+    }
+}
+
+@media (max-width: 700px) {
+    .header-container {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 0;
+        gap: 15px;
+    }
+
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn-large {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .checkbox-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+    .container {
+        padding: 0 20px;
+    }
+
+    .form-container {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    .auth-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

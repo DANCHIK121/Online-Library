@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн Библиотека | Админ-панель</title>
+    <!-- Подключение иконки -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Подключение CSS для Django -->
+    <link rel="stylesheet" href="{% static 'css/AddBookPageStyle.css' %}">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Шапка с навигацией админки -->
+        <header class="header">
+            <div class="container header-container">
+                <div class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <span>Онлайн Библиотека | Админ-панель</span>
+                </div>
+                <div class="auth-buttons">
+                    <a href="/admin_dashboard/" class="btn btn-outline"><i class="fas fa-tachometer-alt"></i> Дашборд</a>
+                    <a href="/logout/" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Основной контент - форма добавления книги -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Навигационная цепочка (хлебные крошки) -->
+                <div class="breadcrumbs">
+                    <a href="/admin_dashboard/"><i class="fas fa-home"></i> Главная админки</a>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Добавление книги</span>
+                </div>
+
+                <!-- Заголовок страницы -->
+                <div class="page-header">
+                    <h1><i class="fas fa-plus-circle"></i> Добавить новую книгу</h1>
+                    <p class="header-description">Заполните все поля формы, чтобы добавить книгу в базу данных библиотеки</p>
+                </div>
+
+                <!-- Форма добавления книги -->
+                <div class="form-container">
+                    <form method="POST" enctype="multipart/form-data" class="book-form">
+                        {% csrf_token %}
+
+                        <!-- Основная информация о книге -->
+                        <div class="form-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-info-circle"></i> Основная информация
+                            </h2>
+
+                            <div class="form-grid">
+                                <!-- Название книги -->
+                                <div class="form-group full-width">
+                                    <label for="book-title">
+                                        <i class="fas fa-heading"></i> Название книги <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="book-title" name="title" class="form-control"
+                                           placeholder="Введите полное название книги" required>
+                                </div>
+
+                                <!-- Автор -->
+                                <div class="form-group">
+                                    <label for="book-author">
+                                        <i class="fas fa-user"></i> Автор <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="book-author" name="author" class="form-control"
+                                           placeholder="Имя автора" required>
+                                </div>
+
+                                <!-- Год издания -->
+                                <div class="form-group">
+                                    <label for="book-year">
+                                        <i class="fas fa-calendar"></i> Год издания <span class="required">*</span>
+                                    </label>
+                                    <input type="number" id="book-year" name="year" class="form-control"
+                                           placeholder="2025" min="1000" max="2100" required>
+                                </div>
+
+                                <!-- ISBN (международный стандартный книжный номер) -->
+                                <div class="form-group">
+                                    <label for="book-isbn">
+                                        <i class="fas fa-barcode"></i> ISBN
+                                    </label>
+                                    <input type="text" id="book-isbn" name="isbn" class="form-control"
+                                           placeholder="978-5-699-12345-6">
+                                </div>
+
+                                <!-- Издательство -->
+                                <div class="form-group">
+                                    <label for="book-publisher">
+                                        <i class="fas fa-building"></i> Издательство
+                                    </label>
+                                    <input type="text" id="book-publisher" name="publisher" class="form-control"
+                                           placeholder="Название издательства">
+                                </div>
+
+                                <!-- Количество страниц -->
+                                <div class="form-group">
+                                    <label for="book-pages">
+                                        <i class="fas fa-file-alt"></i> Количество страниц
+                                    </label>
+                                    <input type="number" id="book-pages" name="pages" class="form-control"
+                                           placeholder="350" min="1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Детальная информация и описание -->
+                        <div class="form-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-align-left"></i> Детальное описание
+                            </h2>
+
+                            <!-- Жанр / Категория -->
+                            <div class="form-group">
+                                <label for="book-genre">
+                                    <i class="fas fa-tags"></i> Жанр / Категория <span class="required">*</span>
+                                </label>
+                                <select id="book-genre" name="genre" class="form-control" required>
+                                    <option value="" disabled selected>— Выберите жанр —</option>
+                                    <option value="fiction">Художественная литература</option>
+                                    <option value="nonfiction">Нон-фикшн</option>
+                                    <option value="science">Научная литература</option>
+                                    <option value="fantasy">Фэнтези</option>
+                                    <option value="detective">Детектив</option>
+                                    <option value="romance">Роман</option>
+                                    <option value="poetry">Поэзия</option>
+                                    <option value="children">Детская литература</option>
+                                    <option value="history">История</option>
+                                    <option value="biography">Биография</option>
+                                    <option value="other">Другое</option>
+                                </select>
+                            </div>
+
+                            <!-- Описание (краткое) -->
+                            <div class="form-group">
+                                <label for="book-description">
+                                    <i class="fas fa-paragraph"></i> Краткое описание
+                                </label>
+                                <textarea id="book-description" name="description" class="form-control"
+                                          rows="3" placeholder="Краткая аннотация книги (до 200 символов)"></textarea>
+                                <small class="form-text">Максимум 200 символов</small>
+                            </div>
+
+                            <!-- Полное описание -->
+                            <div class="form-group">
+                                <label for="book-full-description">
+                                    <i class="fas fa-file-text"></i> Полное описание
+                                </label>
+                                <textarea id="book-full-description" name="full_description" class="form-control"
+                                          rows="6" placeholder="Подробное описание, аннотация, содержание..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Медиа-файлы и статус -->
+                        <div class="form-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-image"></i> Медиа и статус
+                            </h2>
+
+                            <div class="form-grid">
+                                <!-- Обложка книги -->
+                                <div class="form-group">
+                                    <label for="book-cover">
+                                        <i class="fas fa-book-cover"></i> Обложка книги
+                                    </label>
+                                    <div class="file-input-wrapper">
+                                        <input type="file" id="book-cover" name="cover_image" class="file-input"
+                                               accept="image/jpeg,image/png,image/webp">
+                                        <div class="file-input-preview">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span>Выберите файл или перетащите сюда</span>
+                                            <small>PNG, JPG, WEBP до 5 МБ</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Файл книги (PDF) -->
+                                <div class="form-group">
+                                    <label for="book-file">
+                                        <i class="fas fa-file-pdf"></i> Файл книги (PDF)
+                                    </label>
+                                    <div class="file-input-wrapper">
+                                        <input type="file" id="book-file" name="book_file" class="file-input"
+                                               accept=".pdf,.epub,.fb2,.djvu">
+                                        <div class="file-input-preview">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <span>Загрузить электронную версию</span>
+                                            <small>PDF, EPUB, FB2, DJVU до 50 МБ</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Количество экземпляров -->
+                                <div class="form-group">
+                                    <label for="book-quantity">
+                                        <i class="fas fa-copy"></i> Количество экземпляров <span class="required">*</span>
+                                    </label>
+                                    <input type="number" id="book-quantity" name="quantity" class="form-control"
+                                           value="1" min="0" max="999" required>
+                                </div>
+
+                                <!-- Статус наличия -->
+                                <div class="form-group">
+                                    <label for="book-status">
+                                        <i class="fas fa-check-circle"></i> Статус <span class="required">*</span>
+                                    </label>
+                                    <select id="book-status" name="status" class="form-control" required>
+                                        <option value="available">В наличии</option>
+                                        <option value="limited">Ограниченное количество</option>
+                                        <option value="out">Нет в наличии</option>
+                                        <option value="expected">Ожидается</option>
+                                    </select>
+                                </div>
+
+                                <!-- Язык книги -->
+                                <div class="form-group">
+                                    <label for="book-language">
+                                        <i class="fas fa-language"></i> Язык
+                                    </label>
+                                    <select id="book-language" name="language" class="form-control">
+                                        <option value="ru">Русский</option>
+                                        <option value="en">Английский</option>
+                                        <option value="de">Немецкий</option>
+                                        <option value="fr">Французский</option>
+                                        <option value="es">Испанский</option>
+                                        <option value="other">Другой</option>
+                                    </select>
+                                </div>
+
+                                <!-- Дата добавления -->
+                                <div class="form-group">
+                                    <label for="book-date">
+                                        <i class="fas fa-calendar-plus"></i> Дата добавления
+                                    </label>
+                                    <input type="date" id="book-date" name="added_date" class="form-control"
+                                           value="2026-02-18">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Дополнительные параметры -->
+                        <div class="form-section">
+                            <h2 class="section-title">
+                                <i class="fas fa-cog"></i> Дополнительные параметры
+                            </h2>
+
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="is_new" value="yes">
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">Отметить как "Новинка"</span>
+                                </label>
+
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="is_bestseller" value="yes">
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">Бестселлер</span>
+                                </label>
+
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="is_recommended" value="yes">
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">Рекомендуемое</span>
+                                </label>
+
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="for_kids" value="yes">
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">Детская литература</span>
+                                </label>
+
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="limited_edition" value="yes">
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">Лимитированное издание</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Кнопки отправки формы -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary btn-large">
+                                <i class="fas fa-save"></i> Сохранить книгу
+                            </button>
+                            <button type="button" class="btn btn-outline btn-large" onclick="window.history.back()">
+                                <i class="fas fa-times"></i> Отмена
+                            </button>
+                            <button type="reset" class="btn btn-outline btn-large">
+                                <i class="fas fa-undo"></i> Сбросить
+                            </button>
+                        </div>
+
+                        <!-- Предупреждение о обязательных полях -->
+                        <p class="required-note">
+                            <span class="required">*</span> — поля, обязательные для заполнения
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <!-- Подвал -->
+        <footer class="footer">
+            <div class="container footer-container">
+                <div class="footer-info">
+                    <p>© 2026 Онлайн Библиотека. Административная панель.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Помощь</a>
+                    <a href="#">Документация</a>
+                    <a href="#">Поддержка</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

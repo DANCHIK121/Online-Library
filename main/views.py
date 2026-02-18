@@ -30,6 +30,11 @@ def personal_account_page(request):
 def personal_data_page(request):
     return render(request, 'PersonalDataPage.html')
 
+def add_book_page(request):
+    return render(request, "AddBookPage.html")
+
+
+
 
 # Handlers for pages work
 def user_logout(request):
@@ -194,23 +199,164 @@ def user_login(request):
 
     return render(request, 'LoginPage.html')
 
+# def send_welcome_email(email, firstname):
+#     """Отправка приветственного письма"""
+#     subject = 'Добро пожаловать в Онлайн библиотеку!'
+#     message = f'''
+#     Здравствуйте, {firstname}!
+#
+#     Благодарим вас за регистрацию в нашей онлайн библиотеке.
+#
+#     Ваш электронный читательский билет доступен в личном кабинете.
+#
+#     С уважением,
+#     Команда Онлайн библиотеки
+#     '''
+#     from_email = 'daniil_projects@mail.ru'
+#     recipient_list = [email]
+#
+#     try:
+#         send_mail(subject, message, from_email, recipient_list)
+#     except:
+#         pass
+
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+
 def send_welcome_email(email, firstname):
-    """Отправка приветственного письма"""
-    subject = 'Добро пожаловать в Онлайн библиотеку!'
-    message = f'''
-    Здравствуйте, {firstname}!
+    """Отправка приветственного письма с HTML оформлением"""
+    subject = '📚 Добро пожаловать в Онлайн библиотеку!'
 
-    Благодарим вас за регистрацию в нашей онлайн библиотеке.
+    # Контекст для шаблона
+    context = {
+        'firstname': firstname,
+        'login_url': 'https://online-library-for-yarik-from-daniil.cloudpub.ru/login_page/',
+        'support_email': 'online_library_mail_box@mail.ru'
+    }
 
-    Ваш электронный читательский билет доступен в личном кабинете.
+    # HTML версия письма
+    html_message = f'''
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4;">
+            <tr>
+                <td align="center" style="padding: 40px 0;">
+                    <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <!-- Шапка -->
+                        <tr>
+                            <td style="padding: 40px 40px 20px 40px; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px 8px 0 0;">
+                                <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 300;">📖 Онлайн библиотека</h1>
+                            </td>
+                        </tr>
 
-    С уважением,
-    Команда Онлайн библиотеки
+                        <!-- Основной контент -->
+                        <tr>
+                            <td style="padding: 40px;">
+                                <h2 style="color: #333333; margin: 0 0 20px 0; font-size: 24px;">Здравствуйте, {firstname}!</h2>
+
+                                <p style="color: #666666; line-height: 1.6; margin: 0 0 20px 0; font-size: 16px;">
+                                    Благодарим вас за регистрацию в нашей онлайн библиотеке! 
+                                    Мы рады приветствовать вас в сообществе любителей чтения.
+                                </p>
+
+                                <table width="100%" cellpadding="0" cellspacing="0" style="margin: 30px 0;">
+                                    <tr>
+                                        <td style="background-color: #f8f9fa; padding: 20px; border-radius: 6px;">
+                                            <p style="color: #333333; margin: 0 0 10px 0; font-size: 18px; font-weight: bold;">
+                                                ✅ Ваш электронный читательский билет
+                                            </p>
+                                            <p style="color: #666666; margin: 0; font-size: 14px;">
+                                                Теперь вы можете пользоваться всеми возможностями библиотеки:<br>
+                                                • Доступ к 10 000+ книг<br>
+                                                • Сохранение закладок<br>
+                                                • Синхронизация между устройствами<br>
+                                                • Персональные рекомендации
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!-- Кнопки действий -->
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td align="center" style="padding: 10px 0;">
+                                            <a href="{context["login_url"]}" style="background-color: #764ba2; color: #ffffff; padding: 12px 30px; text-decoration: none; border-radius: 4px; display: inline-block; margin: 0 10px 10px 0; font-weight: bold;">🔑 Войти в личный кабинет</a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <hr style="border: none; border-top: 1px solid #eeeeee; margin: 30px 0;">
+
+                                <p style="color: #999999; font-size: 14px; line-height: 1.6; margin: 0;">
+                                    Если у вас возникли вопросы, напишите нам: 
+                                    <a href="mailto:{context["support_email"]}" style="color: #667eea; text-decoration: none;">{context["support_email"]}</a>
+                                </p>
+                            </td>
+                        </tr>
+
+                        <!-- Подвал -->
+                        <tr>
+                            <td style="padding: 30px 40px; background-color: #f8f9fa; border-radius: 0 0 8px 8px;">
+                                <p style="color: #999999; font-size: 14px; line-height: 1.6; margin: 0; text-align: center;">
+                                    С уважением,<br>
+                                    <strong style="color: #666666;">Команда Онлайн библиотеки</strong>
+                                </p>
+                                <p style="color: #cccccc; font-size: 12px; text-align: center; margin: 20px 0 0 0;">
+                                    © 2026 Онлайн библиотека. Все права защищены.<br>
+                                    Вы получили это письмо, потому что зарегистрировались на нашем сайте.
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
     '''
+
+    # Текстовая версия для спам-фильтров
+    text_message = f'''
+Здравствуйте, {firstname}!
+
+Благодарим вас за регистрацию в нашей онлайн библиотеке!
+
+✅ Ваш электронный читательский билет активирован
+Теперь вам доступно:
+- Более 10 000 книг
+- Сохранение закладок
+- Синхронизация между устройствами
+- Персональные рекомендации
+
+🔑 Войти в личный кабинет: {context["login_url"]}
+
+Если у вас возникли вопросы: {context["support_email"]}
+
+С уважением,
+Команда Онлайн библиотеки
+    '''
+
     from_email = 'daniil_projects@mail.ru'
     recipient_list = [email]
 
     try:
-        send_mail(subject, message, from_email, recipient_list)
-    except:
-        pass
+        # Отправляем HTML-письмо с текстовой альтернативой
+        send_mail(
+            subject=subject,
+            message=text_message,  # текстовая версия
+            from_email=from_email,
+            recipient_list=recipient_list,
+            html_message=html_message,  # HTML версия
+            fail_silently=False
+        )
+        return True
+    except Exception as e:
+        print(f"Ошибка отправки письма: {e}")
+        return False
