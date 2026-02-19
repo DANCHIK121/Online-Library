@@ -36,14 +36,14 @@
                 <!-- Информация о книге -->
                 <div class="book-info-header">
                     <div class="book-meta">
-                        <h1 class="book-title">Преступление и наказание</h1>
+                        <h1 class="book-title">{{ title }}</h1>
                         <div class="book-author">
-                            <i class="fas fa-user"></i> Фёдор Достоевский
+                            <i class="fas fa-user"></i> {{ author }}
                         </div>
                         <div class="book-details">
-                            <span class="book-year"><i class="fas fa-calendar"></i> 1866</span>
-                            <span class="book-pages"><i class="fas fa-file-alt"></i> 672 стр.</span>
-                            <span class="book-genre"><i class="fas fa-tags"></i> Роман</span>
+                            <span class="book-year"><i class="fas fa-calendar"></i> {{ year }} год</span>
+                            <span class="book-pages"><i class="fas fa-file-alt"></i> {{ pages }} стр.</span>
+                            <span class="book-genre"><i class="fas fa-tags"></i> Жанр: {{ genre }}</span>
                         </div>
                     </div>
 
@@ -103,9 +103,6 @@
                                         <i class="fas fa-font"></i> +
                                     </button>
                                 </div>
-                                <button class="control-btn" id="toggle-theme">
-                                    <i class="fas fa-moon"></i> Тёмная тема
-                                </button>
                             </div>
 
                             <div class="text-container" id="text-container">
@@ -140,97 +137,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Содержание книги (сайдбар) -->
-                    <div class="book-sidebar" id="book-sidebar">
-                        <div class="sidebar-header">
-                            <h2><i class="fas fa-list"></i> Содержание</h2>
-                            <button class="collapse-btn" id="toggle-sidebar">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                        </div>
-                        <div class="table-of-contents" id="table-of-contents">
-                            <div class="content-section">
-                                <div class="content-item main-chapter active">
-                                    <span class="chapter-marker"><i class="fas fa-book-open"></i></span>
-                                    <span class="chapter-title">Часть первая</span>
-                                    <span class="chapter-pages">стр. 1-152</span>
-                                </div>
-                                <div class="content-subitems">
-                                    <div class="content-item subchapter">
-                                        <span class="chapter-marker">I</span>
-                                        <span class="chapter-title">Глава I</span>
-                                        <span class="chapter-pages">1-15</span>
-                                    </div>
-                                    <div class="content-item subchapter">
-                                        <span class="chapter-marker">II</span>
-                                        <span class="chapter-title">Глава II</span>
-                                        <span class="chapter-pages">16-32</span>
-                                    </div>
-                                    <div class="content-item subchapter">
-                                        <span class="chapter-marker">III</span>
-                                        <span class="chapter-title">Глава III</span>
-                                        <span class="chapter-pages">33-48</span>
-                                    </div>
-                                    <div class="content-item subchapter">
-                                        <span class="chapter-marker">IV</span>
-                                        <span class="chapter-title">Глава IV</span>
-                                        <span class="chapter-pages">49-67</span>
-                                    </div>
-                                    <div class="content-item subchapter">
-                                        <span class="chapter-marker">V</span>
-                                        <span class="chapter-title">Глава V</span>
-                                        <span class="chapter-pages">68-89</span>
-                                    </div>
-                                    <div class="content-item subchapter">
-                                        <span class="chapter-marker">VI</span>
-                                        <span class="chapter-title">Глава VI</span>
-                                        <span class="chapter-pages">90-112</span>
-                                    </div>
-                                    <div class="content-item subchapter">
-                                        <span class="chapter-marker">VII</span>
-                                        <span class="chapter-title">Глава VII</span>
-                                        <span class="chapter-pages">113-152</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="content-section">
-                                <div class="content-item main-chapter">
-                                    <span class="chapter-marker"><i class="fas fa-book-open"></i></span>
-                                    <span class="chapter-title">Часть вторая</span>
-                                    <span class="chapter-pages">стр. 153-298</span>
-                                </div>
-                                <div class="content-subitems" style="display: none;">
-                                    <!-- Подглавы будут здесь -->
-                                </div>
-                            </div>
-
-                            <div class="content-section">
-                                <div class="content-item main-chapter">
-                                    <span class="chapter-marker"><i class="fas fa-book-open"></i></span>
-                                    <span class="chapter-title">Часть третья</span>
-                                    <span class="chapter-pages">стр. 299-450</span>
-                                </div>
-                            </div>
-
-                            <div class="content-section">
-                                <div class="content-item main-chapter">
-                                    <span class="chapter-marker"><i class="fas fa-book-open"></i></span>
-                                    <span class="chapter-title">Часть четвёртая</span>
-                                    <span class="chapter-pages">стр. 451-590</span>
-                                </div>
-                            </div>
-
-                            <div class="content-section">
-                                <div class="content-item main-chapter">
-                                    <span class="chapter-marker"><i class="fas fa-book-open"></i></span>
-                                    <span class="chapter-title">Часть пятая</span>
-                                    <span class="chapter-pages">стр. 591-672</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </main>
@@ -239,12 +145,7 @@
         <footer class="footer">
             <div class="container footer-container">
                 <div class="footer-info">
-                    <p>© 2026 Онлайн Библиотека. Читайте с удовольствием.</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#">Помощь</a>
-                    <a href="#">Политика конфиденциальности</a>
-                    <a href="#">Поддержка</a>
+                    <p>© 2026 Онлайн Библиотека.</p>
                 </div>
             </div>
         </footer>
@@ -297,7 +198,7 @@
             let scale = 1.0;
 
             // Загрузка демо PDF
-            const pdfUrl = '{% static "books/Куприн_Александр._Чудесный_доктор.pdf" %}';
+            const pdfUrl = '{{ pdf_url|safe }}';
 
             // Загружаем PDF (если есть)
             pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_) {
@@ -472,39 +373,6 @@
                     sidebarOverlay.classList.remove('active');
                 });
             }
-
-            // Разворачивание/сворачивание подглав в содержании
-            document.querySelectorAll('.main-chapter').forEach(chapter => {
-                chapter.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const section = this.closest('.content-section');
-                    const subitems = section.querySelector('.content-subitems');
-
-                    if (subitems) {
-                        if (subitems.style.display === 'none' || !subitems.style.display) {
-                            subitems.style.display = 'block';
-                        } else {
-                            subitems.style.display = 'none';
-                        }
-                    }
-                });
-            });
-
-            // Активация пунктов содержания при клике
-            document.querySelectorAll('.content-item').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    document.querySelectorAll('.content-item').forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-
-                    // На мобильных устройствах сворачиваем сайдбар после выбора главы
-                    if (window.innerWidth <= 1000) {
-                        bookSidebar.classList.add('collapsed');
-                        toggleSidebarBtn.querySelector('i').className = 'fas fa-chevron-right';
-                        sidebarOverlay.classList.remove('active');
-                    }
-                });
-            });
 
             // Адаптация для мобильных устройств
             function checkMobile() {

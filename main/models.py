@@ -12,19 +12,19 @@ class Book(models.Model):
     ]
 
     # Жанры книг
-    GENRE_CHOICES = [
-        ('fiction', 'Художественная литература'),
-        ('nonfiction', 'Нон-фикшн'),
-        ('science', 'Научная литература'),
-        ('fantasy', 'Фэнтези'),
-        ('detective', 'Детектив'),
-        ('romance', 'Роман'),
-        ('poetry', 'Поэзия'),
-        ('children', 'Детская литература'),
-        ('history', 'История'),
-        ('biography', 'Биография'),
-        ('other', 'Другое'),
-    ]
+    GENRE_CHOICES = {
+        'fiction': 'Художественная литература',
+        'nonfiction': 'Нон-фикшн',
+        'science': 'Научная литература',
+        'fantasy': 'Фэнтези',
+        'detective': 'Детектив',
+        'romance': 'Роман',
+        'poetry': 'Поэзия',
+        'children': 'Детская литература',
+        'history': 'История',
+        'biography': 'Биография',
+        'other': 'Другое',
+    }
 
     # Языки
     LANGUAGE_CHOICES = [
@@ -51,7 +51,7 @@ class Book(models.Model):
 
     # Медиа-файлы
     cover_image = models.ImageField('Обложка', upload_to='static/covers/', blank=True, null=True)
-    book_content = models.CharField('Файл книги', blank=True, null=True)
+    book_content = models.FileField('Текстовое содержание книги', upload_to='static/contents/', blank=True, null=True)
     book_file = models.FileField('Файл книги', upload_to='static/books/', blank=True, null=True)
 
     # Статус и количество

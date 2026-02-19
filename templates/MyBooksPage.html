@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн Библиотека | Мои книги</title>
+    <!-- Подключение иконки -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Подключение CSS для Django -->
+    <link rel="stylesheet" href="{% static 'css/MyBooksPageStyle.css' %}">
+    <!-- Подключение Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        {% if user.is_authenticated %}
+        <!-- Шапка -->
+        <header class="header">
+            <div class="container header-container">
+                <a href="/home/" class="logo" style="text-decoration: none;">
+                    <i class="fas fa-book-open"></i>
+                    <span>Онлайн Библиотека</span>
+                </a>
+                <nav class="nav">
+                    <ul>
+                        <li><a href="{% url 'home' %}">Главная</a></li>
+                        <li><a href="#">Каталог</a></li>
+                        <li><a href="{% url 'my_books' %}" class="active">Мои книги</a></li>
+                        <li><a href="{% url 'profile' %}">Профиль</a></li>
+                    </ul>
+                </nav>
+                <div class="user-profile-mini">
+                    <span class="user-name">{{ user.get_full_name|default:user.username }}</span>
+                    <div class="avatar" id="avatarDropdown" style="cursor: pointer;">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" alt="Avatar" class="avatar-img">
+                        {% else %}
+                            <i class="fas fa-user-circle"></i>
+                        {% endif %}
+                    </div>
+                    <!-- Выпадающее меню -->
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <form id="logoutForm" method="POST" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">
+                                <i class="fas fa-sign-out-alt"></i> Выйти
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="container">
+                <!-- Навигация (хлебные крошки) -->
+                <div class="page-nav">
+                    <a href="{% url 'profile' %}" class="back-link">
+                        <i class="fas fa-arrow-left"></i> Вернуться в профиль
+                    </a>
+                    <span class="current-page">Мои книги</span>
+                </div>
+
+                <!-- Заголовок страницы -->
+                <div class="page-header">
+                    <h1><i class="fas fa-book"></i> Мои книги</h1>
+                    <p class="subtitle">Здесь отображаются все книги, которые вы когда-либо брали в библиотеке</p>
+                </div>
+
+                <!-- Блок с сообщениями (успех/ошибка) -->
+                {% if messages %}
+                <div class="form-messages">
+                    {% for message in messages %}
+                    <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                        <i class="fas
+                            {% if message.tags == 'success' %}fa-check-circle
+                            {% elif message.tags == 'error' %}fa-exclamation-circle
+                            {% else %}fa-info-circle{% endif %}">
+                        </i>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Вкладки (текущие и архивные) -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" data-tab="current">
+                            <i class="fas fa-book-open"></i> Текущие (<span id="currentCount">{{ current_books|length }}</span>)
+                        </button>
+                        <button class="tab-btn" data-tab="archive">
+                            <i class="fas fa-archive"></i> Архив (<span id="archiveCount">{{ archived_books|length }}</span>)
+                        </button>
+                    </div>
+
+                    <!-- Блок поиска и фильтрации -->
+                    <div class="books-toolbar">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Поиск по названию или автору...">
+                        </div>
+                        <div class="filter-sort">
+                            <select id="sortSelect">
+                                <option value="default">Сортировка</option>
+                                <option value="title_asc">По названию (А-Я)</option>
+                                <option value="title_desc">По названию (Я-А)</option>
+                                <option value="date_desc">Сначала новые</option>
+                                <option value="date_asc">Сначала старые</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Вкладка "Текущие книги" -->
+                    <div class="tab-content active" id="tab-current">
+                        {% if current_books %}
+                        <div class="books-grid">
+                            {% for book in current_books %}
+                            <div class="book-card" data-title="{{ book.title }}" data-author="{{ book.author }}">
+                                <div class="book-cover">
+                                    {% if book.cover %}
+                                        <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+                                    {% else %}
+                                        <div class="cover-placeholder">
+                                            <i class="fas fa-book"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="book-info">
+                                    <h3 class="book-title">{{ book.title }}</h3>
+                                    <p class="book-author">{{ book.author }}</p>
+                                    <div class="book-status status-current">
+                                        <i class="fas fa-clock"></i> На руках
+                                    </div>
+                                    <div class="book-dates">
+                                        <p><i class="far fa-calendar-alt"></i> Взята: {{ book.issue_date|date:"d.m.Y" }}</p>
+                                        <p><i class="far fa-calendar-check"></i> Надо вернуть до: <strong class="{% if book.is_overdue %}overdue{% endif %}">{{ book.due_date|date:"d.m.Y" }}</strong></p>
+                                    </div>
+                                    <div class="book-actions">
+                                        <a href="{% url 'book_detail' book.id %}" class="btn-details">
+                                            <i class="fas fa-info-circle"></i> Подробнее
+                                        </a>
+                                        {% if book.can_renew %}
+                                        <button class="btn-renew" data-book-id="{{ book.id }}">
+                                            <i class="fas fa-sync-alt"></i> Продлить
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-book-open fa-4x"></i>
+                            <h3>У вас нет книг на руках</h3>
+                            <p>Самое время выбрать что-нибудь интересное в нашем каталоге!</p>
+                            <a href="#" class="btn btn-primary">
+                                Перейти в каталог
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Вкладка "Архив" (ранее прочитанные) -->
+                    <div class="tab-content" id="tab-archive">
+                        {% if archived_books %}
+                        <div class="books-grid">
+                            {% for book in archived_books %}
+                            <div class="book-card archived" data-title="{{ book.title }}" data-author="{{ book.author }}">
+                                <div class="book-cover">
+                                    {% if book.cover %}
+                                        <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+                                    {% else %}
+                                        <div class="cover-placeholder">
+                                            <i class="fas fa-book"></i>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="book-info">
+                                    <h3 class="book-title">{{ book.title }}</h3>
+                                    <p class="book-author">{{ book.author }}</p>
+                                    <div class="book-status status-archived">
+                                        <i class="fas fa-check-circle"></i> Прочитана
+                                    </div>
+                                    <div class="book-dates">
+                                        <p><i class="far fa-calendar-alt"></i> Взята: {{ book.issue_date|date:"d.m.Y" }}</p>
+                                        <p><i class="far fa-calendar-check"></i> Возвращена: {{ book.return_date|date:"d.m.Y" }}</p>
+                                    </div>
+                                    <div class="book-actions">
+                                        <a href="{% url 'book_detail' book.id %}" class="btn-details">
+                                            <i class="fas fa-info-circle"></i> Подробнее
+                                        </a>
+                                        <button class="btn-take-again" data-book-id="{{ book.id }}">
+                                            <i class="fas fa-redo-alt"></i> Взять снова
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-history fa-4x"></i>
+                            <h3>История пуста</h3>
+                            <p>Здесь появятся книги, которые вы вернули в библиотеку.</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Блок с рекомендациями (на основе истории) -->
+                {% if recommended_books %}
+                <div class="recommendations-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-star"></i> Рекомендуем вам</h2>
+                        <p>Основываясь на ваших прошлых выборах</p>
+                    </div>
+                    <div class="books-row">
+                        {% for book in recommended_books|slice:":5" %}
+                        <div class="row-book-card">
+                            <div class="book-cover small">
+                                {% if book.cover %}
+                                    <img src="{{ book.cover.url }}" alt="{{ book.title }}">
+                                {% else %}
+                                    <div class="cover-placeholder small">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="book-info">
+                                <h4>{{ book.title }}</h4>
+                                <p>{{ book.author }}</p>
+                                <a href="{% url 'book_detail' book.id %}" class="btn-outline-small">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </main>
+
+        <!-- Подвал -->
+        <footer class="footer">
+            <div class="container">
+                <p>© 2026 Онлайн библиотека.</p>
+            </div>
+        </footer>
+
+        {% else %}
+        <!-- Блок для неавторизованных пользователей -->
+        <div class="auth-required">
+            <div class="auth-container">
+                <i class="fas fa-lock fa-4x"></i>
+                <h1>Доступ ограничен</h1>
+                <p>Пожалуйста, войдите в систему для просмотра ваших книг</p>
+                <div class="auth-buttons">
+                    <a href="{% url 'login' %}" class="btn btn-primary">Войти</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary">Зарегистрироваться</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Выпадающее меню аватара (как в шаблоне)
+        const avatar = document.getElementById('avatarDropdown');
+        const dropdown = document.getElementById('dropdownMenu');
+        if (avatar && dropdown) {
+            avatar.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('show');
+            });
+            document.addEventListener('click', function(e) {
+                if (!avatar.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+        }
+
+        // Переключение вкладок
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Деактивировать все кнопки и контенты
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                // Активировать текущие
+                btn.classList.add('active');
+                const tabId = btn.dataset.tab;
+                document.getElementById(`tab-${tabId}`).classList.add('active');
+            });
+        });
+
+        // Поиск по книгам
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const activeTab = document.querySelector('.tab-content.active');
+                if (!activeTab) return;
+
+                const bookCards = activeTab.querySelectorAll('.book-card');
+                bookCards.forEach(card => {
+                    const title = card.dataset.title?.toLowerCase() || '';
+                    const author = card.dataset.author?.toLowerCase() || '';
+                    if (title.includes(searchTerm) || author.includes(searchTerm)) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        }
+
+        // Сортировка
+        const sortSelect = document.getElementById('sortSelect');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                const activeTab = document.querySelector('.tab-content.active');
+                if (!activeTab) return;
+
+                const grid = activeTab.querySelector('.books-grid');
+                if (!grid) return;
+
+                const cards = Array.from(grid.querySelectorAll('.book-card'));
+                const sortBy = this.value;
+
+                cards.sort((a, b) => {
+                    const titleA = a.dataset.title?.toLowerCase() || '';
+                    const titleB = b.dataset.title?.toLowerCase() || '';
+
+                    if (sortBy === 'title_asc') return titleA.localeCompare(titleB);
+                    if (sortBy === 'title_desc') return titleB.localeCompare(titleA);
+
+                    // Для сортировки по дате нужно добавить data-атрибуты с датами
+                    return 0;
+                });
+
+                // Перестроить сетку
+                cards.forEach(card => grid.appendChild(card));
+            });
+        }
+
+        // Кнопки "Продлить" (заглушка)
+        document.querySelectorAll('.btn-renew').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const bookId = this.dataset.bookId;
+                alert(`Запрос на продление книги #${bookId} отправлен. (Функционал в разработке)`);
+            });
+        });
+
+        // Кнопки "Взять снова" (заглушка)
+        document.querySelectorAll('.btn-take-again').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const bookId = this.dataset.bookId;
+                alert(`Книга #${bookId} добавлена в список для бронирования. (Функционал в разработке)`);
+            });
+        });
+    });
+    </script>
+    {% endif %}
+</body>
+</html>

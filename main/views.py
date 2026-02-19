@@ -36,8 +36,9 @@ def personal_data_page(request):
 def add_book_page(request):
     return render(request, "AddBookPage.html")
 
-def live_book_page(request):
-    return render(request, "LiveBookPage.html")
+@login_required(login_url='/login_page/')
+def my_books_page(request):
+    return render(request, "MyBooksPage.html")
 
 def admin_page(request):
     total_books = Book.objects.count()
@@ -65,6 +66,25 @@ def admin_page(request):
     }
 
     return render(request, 'AdminPage.html', context)
+
+@login_required(login_url='/login_page/')
+def live_book_page(request):
+    needed_book = Book.objects.get(title="Преступление и наказание")
+
+    pdf_url = None
+    if needed_book.book_file and hasattr(needed_book.book_file, 'url'):
+        pdf_url = needed_book.book_file.url
+
+    context = {
+        "title":needed_book.title,
+        "author":needed_book.author,
+        "year":needed_book.year,
+        "pages":needed_book.pages,
+        "genre":Book.GENRE_CHOICES[needed_book.genre],
+        "pdf_url":pdf_url,
+    }
+
+    return render(request, 'LiveBookPage.html', context)
 
 
 

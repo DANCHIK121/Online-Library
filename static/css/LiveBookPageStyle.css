@@ -31,7 +31,7 @@ body {
 }
 
 .container {
-    max-width: 1600px;
+    max-width: 1800px; /* Увеличено с 1600px */
     margin: 0 auto;
     padding: 0 30px;
     width: 100%;
@@ -58,10 +58,17 @@ body {
 /* Сетка для контента и сайдбара */
 .content-grid {
     display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 25px;
+    grid-template-columns: 1fr 450px; /* Сайдбар немного уменьшен */
+    gap: 30px; /* Увеличен отступ */
     width: 100%;
     align-items: start;
+}
+
+@media (max-width: 1200px) {
+    .content-grid {
+        grid-template-columns: 1fr 380px;
+        gap: 25px;
+    }
 }
 
 @media (max-width: 1000px) {
@@ -71,33 +78,33 @@ body {
     }
 }
 
-/* Основной контейнер просмотра */
+/* Основной контейнер просмотра - УВЕЛИЧЕН! */
 .viewer-container {
     background: white;
-    border-radius: 24px;
+    border-radius: 28px; /* Чуть больше скругление */
     border: 1px solid #edf2f7;
     overflow: hidden;
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.05);
+    box-shadow: 0 15px 40px -12px rgba(0,0,0,0.12); /* Усилена тень */
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    min-height: 500px;
-    max-height: calc(100vh - 150px);
+    min-height: 700px; /* Увеличено с 500px */
+    max-height: calc(100vh - 120px); /* Немного увеличено */
 }
 
 @media (max-width: 1000px) {
     .viewer-container {
-        max-height: calc(100vh - 300px);
-        min-height: 400px;
+        min-height: 600px; /* Увеличено с 400px */
+        max-height: calc(100vh - 250px);
     }
 }
 
 @media (max-width: 600px) {
     .viewer-container {
-        max-height: calc(100vh - 350px);
-        min-height: 350px;
-        border-radius: 16px;
+        min-height: 450px; /* Увеличено с 350px */
+        max-height: calc(100vh - 300px);
+        border-radius: 20px;
     }
 }
 
@@ -115,17 +122,17 @@ body {
     display: flex;
 }
 
-/* Панели инструментов */
+/* Панели инструментов - более компактные, чтобы оставить больше места для контента */
 .pdf-toolbar,
 .text-toolbar {
     background: #f9fcff;
-    padding: 15px 20px;
+    padding: 12px 24px; /* Уменьшен вертикальный padding */
     border-bottom: 1px solid #edf2f7;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
     flex-shrink: 0;
 }
 
@@ -134,7 +141,7 @@ body {
     .text-toolbar {
         flex-direction: column;
         align-items: stretch;
-        padding: 12px;
+        padding: 12px 16px;
     }
 
     .pdf-controls,
@@ -149,13 +156,13 @@ body {
 .text-controls {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px; /* Немного увеличен отступ */
     flex-wrap: wrap;
 }
 
 .control-btn {
-    width: 36px;
-    height: 36px;
+    width: 44px; /* Увеличено с 40px */
+    height: 44px; /* Увеличено с 40px */
     border-radius: 50%;
     border: 1px solid #d0ddee;
     background: white;
@@ -166,12 +173,13 @@ body {
     justify-content: center;
     transition: all 0.2s;
     flex-shrink: 0;
+    font-size: 1.1rem; /* Увеличен размер иконки */
 }
 
 @media (max-width: 600px) {
     .control-btn {
-        width: 42px;
-        height: 42px;
+        width: 48px; /* Еще больше на мобильных для удобства тыка */
+        height: 48px;
     }
 }
 
@@ -179,19 +187,20 @@ body {
     background: #2b6c5e;
     border-color: #2b6c5e;
     color: white;
+    transform: scale(1.05); /* Легкая анимация при наведении */
 }
 
 .control-btn i {
-    font-size: 1rem;
+    font-size: 1.2rem; /* Увеличен размер иконки */
 }
 
 .page-info,
 .zoom-level,
 .font-size-info {
-    font-size: 0.95rem;
+    font-size: 1rem; /* Увеличен с 0.95rem */
     color: #1f3a5f;
     font-weight: 500;
-    min-width: 100px;
+    min-width: 110px; /* Увеличено со 100px */
     text-align: center;
 }
 
@@ -199,42 +208,44 @@ body {
     .page-info,
     .zoom-level,
     .font-size-info {
-        min-width: 80px;
-        font-size: 0.85rem;
+        min-width: 90px;
+        font-size: 0.9rem;
     }
 }
 
-/* PDF контейнер */
+/* PDF контейнер - УВЕЛИЧЕН! */
 .pdf-container {
     flex: 1 1 auto;
     overflow: auto;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    background: #f5f7fa;
-    padding: 20px;
+    background: #f0f3f8; /* Немного темнее для контраста */
+    padding: 30px; /* Увеличено с 20px */
     min-height: 0;
     width: 100%;
 }
 
 @media (max-width: 600px) {
     .pdf-container {
-        padding: 10px;
+        padding: 15px;
     }
 }
 
 #pdf-canvas {
     max-width: 100%;
     height: auto;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Усилена тень */
     object-fit: contain;
+    border-radius: 8px; /* Легкое скругление для canvas */
+    transition: all 0.2s;
 }
 
 /* Текстовый контейнер */
 .text-container {
     flex: 1 1 auto;
     overflow-y: auto;
-    padding: 40px;
+    padding: 50px; /* Увеличено с 40px */
     background: #faf8f5;
     font-family: 'Georgia', serif;
     line-height: 1.8;
@@ -246,13 +257,13 @@ body {
 
 @media (max-width: 768px) {
     .text-container {
-        padding: 20px;
+        padding: 30px;
     }
 }
 
 @media (max-width: 600px) {
     .text-container {
-        padding: 15px;
+        padding: 20px;
     }
 }
 
@@ -262,22 +273,22 @@ body {
 }
 
 .book-content {
-    max-width: 800px;
+    max-width: 900px; /* Увеличено с 800px */
     margin: 0 auto;
 }
 
 .chapter-title {
-    font-size: 2rem;
+    font-size: 2.2rem; /* Увеличено с 2rem */
     font-weight: 600;
-    margin-bottom: 30px;
+    margin-bottom: 35px; /* Увеличено с 30px */
     color: #1f3a5f;
     text-align: center;
 }
 
 @media (max-width: 768px) {
     .chapter-title {
-        font-size: 1.6rem;
-        margin-bottom: 20px;
+        font-size: 1.8rem;
+        margin-bottom: 25px;
     }
 }
 
@@ -286,34 +297,34 @@ body {
 }
 
 .chapter-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.6rem; /* Увеличено с 1.5rem */
     font-weight: 500;
-    margin-bottom: 20px;
+    margin-bottom: 25px; /* Увеличено с 20px */
     color: #2b6c5e;
 }
 
 @media (max-width: 768px) {
     .chapter-subtitle {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
     }
 }
 
 .book-paragraph {
-    margin-bottom: 20px;
-    text-indent: 30px;
+    margin-bottom: 25px; /* Увеличено с 20px */
+    text-indent: 35px; /* Увеличено с 30px */
     text-align: justify;
-    font-size: 1rem;
+    font-size: 1.1rem; /* Увеличен базовый размер шрифта */
 }
 
 @media (max-width: 600px) {
     .book-paragraph {
-        text-indent: 20px;
-        margin-bottom: 15px;
-        font-size: 0.95rem;
+        text-indent: 25px;
+        margin-bottom: 18px;
+        font-size: 1rem;
     }
 }
 
-/* Сайдбар */
+/* Сайдбар - немного уже, чтобы дать больше места просмотрщику */
 .book-sidebar {
     background: white;
     border-radius: 24px;
@@ -331,31 +342,31 @@ body {
 @media (max-width: 1000px) {
     .book-sidebar {
         position: fixed;
-        right: 15px;
-        top: 90px;
-        width: 280px;
+        right: 20px;
+        top: 100px;
+        width: 300px; /* Чуть шире на мобильных */
         z-index: 1000;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-        max-height: calc(100vh - 100px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        max-height: calc(100vh - 120px);
     }
 
     .book-sidebar.collapsed {
-        width: 60px;
-        right: 15px;
+        width: 70px; /* Увеличено с 60px */
+        right: 20px;
     }
 }
 
 @media (max-width: 600px) {
     .book-sidebar {
-        right: 10px;
-        top: 80px;
-        width: 250px;
+        right: 15px;
+        top: 90px;
+        width: 280px;
     }
 }
 
 .book-sidebar.collapsed {
-    width: 60px;
-    min-width: 60px;
+    width: 70px; /* Увеличено с 60px */
+    min-width: 70px;
 }
 
 .book-sidebar.collapsed .sidebar-header h2,
@@ -364,7 +375,7 @@ body {
 }
 
 .sidebar-header {
-    padding: 20px;
+    padding: 20px 20px;
     border-bottom: 1px solid #edf2f7;
     display: flex;
     justify-content: space-between;
@@ -392,8 +403,8 @@ body {
 }
 
 .collapse-btn {
-    width: 32px;
-    height: 32px;
+    width: 36px; /* Увеличено с 32px */
+    height: 36px; /* Увеличено с 32px */
     border-radius: 50%;
     border: 1px solid #d0ddee;
     background: white;
@@ -414,47 +425,49 @@ body {
 
 .table-of-contents {
     overflow-y: auto;
-    padding: 15px;
+    padding: 20px 15px; /* Увеличен вертикальный padding */
     flex: 1;
     min-height: 0;
 }
 
 @media (max-width: 600px) {
     .table-of-contents {
-        padding: 10px;
+        padding: 15px 10px;
     }
 }
 
 .content-section {
-    margin-bottom: 15px;
+    margin-bottom: 20px; /* Увеличено с 15px */
 }
 
 .content-item {
-    padding: 10px 12px;
-    border-radius: 12px;
+    padding: 12px 15px; /* Увеличено с 10px 12px */
+    border-radius: 14px; /* Чуть больше */
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px; /* Увеличено с 10px */
     transition: all 0.2s;
-    font-size: 0.95rem;
+    font-size: 1rem; /* Увеличено с 0.95rem */
 }
 
 @media (max-width: 600px) {
     .content-item {
-        padding: 8px 10px;
-        font-size: 0.9rem;
+        padding: 10px 12px;
+        font-size: 0.95rem;
     }
 }
 
 .content-item:hover {
     background: #f0f7f5;
+    transform: translateX(3px); /* Легкий сдвиг при наведении */
 }
 
 .content-item.active {
     background: #e3f0ec;
     color: #1f5347;
     font-weight: 500;
+    border-left: 3px solid #2b6c5e; /* Индикатор активного пункта */
 }
 
 .content-item.main-chapter {
@@ -463,37 +476,40 @@ body {
 }
 
 .content-item.subchapter {
-    padding-left: 35px;
-    font-size: 0.9rem;
+    padding-left: 45px; /* Увеличено с 35px */
+    font-size: 0.95rem; /* Увеличено с 0.9rem */
     color: #4a627a;
 }
 
 @media (max-width: 600px) {
     .content-item.subchapter {
-        padding-left: 30px;
+        padding-left: 35px;
     }
 }
 
 .chapter-marker {
     color: #2b6c5e;
-    min-width: 24px;
+    min-width: 28px; /* Увеличено с 24px */
     text-align: center;
+    font-weight: 500;
 }
 
 .chapter-pages {
-    font-size: 0.8rem;
+    font-size: 0.85rem; /* Чуть увеличено с 0.8rem */
     color: #7f95b0;
     white-space: nowrap;
+    margin-left: auto; /* Прижимаем к правому краю */
+    padding-left: 8px;
 }
 
 @media (max-width: 600px) {
     .chapter-pages {
-        font-size: 0.7rem;
+        font-size: 0.75rem;
     }
 }
 
 .content-subitems {
-    margin-top: 5px;
+    margin-top: 8px; /* Увеличено с 5px */
 }
 
 /* Информация о книге */
@@ -501,7 +517,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin: 20px 0 10px;
+    margin: 25px 0 15px; /* Увеличены отступы */
     flex-wrap: wrap;
     gap: 20px;
 }
@@ -516,69 +532,70 @@ body {
 
 .book-meta {
     flex: 1;
-    min-width: 280px;
+    min-width: 300px; /* Увеличено с 280px */
 }
 
 .book-title {
-    font-size: 2.5rem;
+    font-size: 2.8rem; /* Увеличено с 2.5rem */
     font-weight: 700;
     color: #1a2b3e;
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* Увеличено с 10px */
     line-height: 1.2;
     word-break: break-word;
 }
 
 @media (max-width: 768px) {
     .book-title {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
 }
 
 @media (max-width: 600px) {
     .book-title {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
 }
 
 .book-author {
-    font-size: 1.2rem;
+    font-size: 1.3rem; /* Увеличено с 1.2rem */
     color: #2b6c5e;
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* Увеличено с 10px */
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
 @media (max-width: 600px) {
     .book-author {
-        font-size: 1rem;
+        font-size: 1.1rem;
     }
 }
 
 .book-details {
     display: flex;
-    gap: 20px;
+    gap: 25px; /* Увеличено с 20px */
     color: #5b748b;
-    font-size: 0.95rem;
+    font-size: 1rem; /* Увеличено с 0.95rem */
     flex-wrap: wrap;
 }
 
 @media (max-width: 600px) {
     .book-details {
-        gap: 15px;
-        font-size: 0.85rem;
+        gap: 18px;
+        font-size: 0.9rem;
     }
 }
 
 .book-details span {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px; /* Увеличено с 6px */
 }
 
 .book-details i {
     color: #7b95ad;
+    font-size: 1.1rem; /* Увеличены иконки */
 }
 
 /* Переключатель режимов */
@@ -586,9 +603,9 @@ body {
     display: flex;
     background: white;
     border-radius: 50px;
-    padding: 5px;
+    padding: 6px; /* Увеличено с 5px */
     border: 1px solid #edf2f7;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03); /* Усилена тень */
     flex-shrink: 0;
 }
 
@@ -599,18 +616,18 @@ body {
 }
 
 .toggle-btn {
-    padding: 10px 24px;
+    padding: 12px 28px; /* Увеличено с 10px 24px */
     border: none;
     background: transparent;
     border-radius: 40px;
-    font-size: 0.95rem;
+    font-size: 1rem; /* Увеличено с 0.95rem */
     font-weight: 500;
     color: #5b748b;
     cursor: pointer;
     transition: all 0.2s;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px; /* Увеличено с 8px */
     font-family: 'Inter', sans-serif;
     white-space: nowrap;
 }
@@ -619,19 +636,19 @@ body {
     .toggle-btn {
         flex: 1;
         justify-content: center;
-        padding: 12px 16px;
+        padding: 14px 20px;
     }
 }
 
 @media (max-width: 600px) {
     .toggle-btn {
-        padding: 10px 12px;
-        font-size: 0.9rem;
+        padding: 12px 16px;
+        font-size: 0.95rem;
     }
 }
 
 .toggle-btn i {
-    font-size: 1rem;
+    font-size: 1.1rem; /* Увеличено с 1rem */
 }
 
 .toggle-btn.active {
@@ -651,7 +668,7 @@ body {
 /* Шапка */
 .header {
     background-color: white;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); /* Усилена тень */
     position: sticky;
     top: 0;
     z-index: 100;
@@ -664,23 +681,23 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 80px;
+    height: 90px; /* Увеличено с 80px */
 }
 
 @media (max-width: 768px) {
     .header-container {
         flex-direction: column;
         height: auto;
-        padding: 15px 0;
-        gap: 12px;
+        padding: 20px 0;
+        gap: 15px;
     }
 }
 
 .logo {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 1.3rem;
+    gap: 15px; /* Увеличено с 12px */
+    font-size: 1.5rem; /* Увеличено с 1.3rem */
     font-weight: 700;
     color: #1f3a5f;
     text-decoration: none;
@@ -688,29 +705,29 @@ body {
 
 @media (max-width: 600px) {
     .logo {
-        font-size: 1.1rem;
-        gap: 8px;
+        font-size: 1.3rem;
+        gap: 10px;
     }
 
     .logo i {
-        font-size: 1.5rem;
+        font-size: 1.8rem; /* Увеличено с 1.5rem */
     }
 }
 
 .logo i {
     color: #3b7a6e;
-    font-size: 2rem;
+    font-size: 2.3rem; /* Увеличено с 2rem */
 }
 
 .btn {
-    padding: 10px 22px;
+    padding: 12px 26px; /* Увеличено с 10px 22px */
     border-radius: 40px;
     font-weight: 500;
-    font-size: 0.95rem;
+    font-size: 1rem; /* Увеличено с 0.95rem */
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px; /* Увеличено с 8px */
     transition: all 0.2s;
     cursor: pointer;
     border: 1px solid transparent;
@@ -721,8 +738,8 @@ body {
 
 @media (max-width: 600px) {
     .btn {
-        padding: 8px 16px;
-        font-size: 0.85rem;
+        padding: 10px 20px;
+        font-size: 0.9rem;
     }
 }
 
@@ -735,22 +752,24 @@ body {
 .btn-outline:hover {
     background: #f0f5fc;
     border-color: #a5b9d0;
+    transform: translateY(-2px); /* Легкий подъем при наведении */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
 }
 
 /* Подвал */
 .footer {
     background: white;
     border-top: 1px solid #eef2f6;
-    padding: 30px 0;
-    margin-top: 40px;
+    padding: 40px 0; /* Увеличено с 30px */
+    margin-top: 50px; /* Увеличено с 40px */
     flex-shrink: 0;
     width: 100%;
 }
 
 @media (max-width: 768px) {
     .footer {
-        padding: 20px 0;
-        margin-top: 30px;
+        padding: 30px 0;
+        margin-top: 40px;
     }
 }
 
@@ -759,31 +778,31 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: 25px; /* Увеличено с 20px */
 }
 
 @media (max-width: 600px) {
     .footer-container {
         flex-direction: column;
         text-align: center;
-        gap: 15px;
+        gap: 20px;
     }
 }
 
 .footer-info p {
     color: #62778e;
-    font-size: 0.9rem;
+    font-size: 0.95rem; /* Увеличено с 0.9rem */
 }
 
 @media (max-width: 600px) {
     .footer-info p {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
     }
 }
 
 .footer-links {
     display: flex;
-    gap: 25px;
+    gap: 30px; /* Увеличено с 25px */
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
@@ -791,19 +810,19 @@ body {
 
 @media (max-width: 600px) {
     .footer-links {
-        gap: 15px;
+        gap: 20px;
     }
 }
 
 .footer-links a {
     color: #405e7c;
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 1rem; /* Увеличено с 0.95rem */
 }
 
 @media (max-width: 600px) {
     .footer-links a {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 }
 
@@ -825,11 +844,31 @@ br {
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0,0,0,0.3);
+        background: rgba(0,0,0,0.4); /* Немного темнее */
         z-index: 999;
+        backdrop-filter: blur(2px); /* Эффект размытия */
     }
 
     .sidebar-overlay.active {
         display: block;
     }
+}
+
+/* Дополнительные улучшения для скроллбаров */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #b8c9e0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9bb0cb;
 }
