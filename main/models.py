@@ -1,89 +1,87 @@
-import uuid
-
 from django.db import models
-from django.urls import reverse
+from django.utils import timezone
 
-from users.models import CustomUser
-
-class Genre(models.Model):
-    name = models.CharField(max_length=200, help_text="Введите жанр книги (например, Научная фантастика)")
-
-    def __str__(self):
-        return self.name
-
-class Language(models.Model):
-    name = models.CharField(max_length=200, help_text="Введите язык книги (например, Английский, Русский)")
-
-    def __str__(self):
-        return self.name
-
-class Author(models.Model):
-    first_name = models.CharField(max_length=100, verbose_name="Имя")
-    last_name = models.CharField(max_length=100, verbose_name="Фамилия")
-    date_of_birth = models.DateField(null=True, blank=True, verbose_name="Дата рождения")
-    date_of_death = models.DateField(null=True, blank=True, verbose_name="Дата смерти")
-
-    class Meta:
-        ordering = ["last_name", "first_name"]
-        verbose_name = "Автор"
-        verbose_name_plural = "Авторы"
-
-    def get_absolute_url(self):
-        return reverse('author-detail', args=[str(self.id)])
-
-    def __str__(self):
-        return f'{self.last_name}, {self.first_name}'
 
 class Book(models.Model):
-    title = models.CharField(max_length=200, verbose_name="Название")
-    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True, verbose_name="Автор")
-    summary = models.TextField(max_length=1000, help_text="Введите краткое описание книги", verbose_name="Аннотация")
-    isbn = models.CharField('ISBN', max_length=13, unique=True, help_text='13-символьный <a href="https://www.isbn-international.org/content/what-isbn">номер ISBN</a>')
-    genre = models.ManyToManyField(Genre, help_text="Выберите жанр для этой книги", verbose_name="Жанр")
-    language = models.ForeignKey('Language', on_delete=models.SET_NULL, null=True, verbose_name="Язык")
-    full_text = models.TextField(help_text="Полное содержание книги", verbose_name="Полный текст", blank=True)
+    # Статусы наличия книги
+    STATUS_CHOICES = [
+        ('available', 'В наличии'),
+        ('limited', 'Ограниченное количество'),
+        ('out', 'Нет в наличии'),
+        ('expected', 'Ожидается'),
+    ]
+
+    # Жанры книг
+    GENRE_CHOICES = [
+        ('fiction', 'Художественная литература'),
+        ('nonfiction', 'Нон-фикшн'),
+        ('science', 'Научная литература'),
+        ('fantasy', 'Фэнтези'),
+        ('detective', 'Детектив'),
+        ('romance', 'Роман'),
+        ('poetry', 'Поэзия'),
+        ('children', 'Детская литература'),
+        ('history', 'История'),
+        ('biography', 'Биография'),
+        ('other', 'Другое'),
+    ]
+
+    # Языки
+    LANGUAGE_CHOICES = [
+        ('ru', 'Русский'),
+        ('en', 'Английский'),
+        ('de', 'Немецкий'),
+        ('fr', 'Французский'),
+        ('es', 'Испанский'),
+        ('other', 'Другой'),
+    ]
+
+    # Основные поля
+    title = models.CharField('Название', max_length=300)
+    author = models.CharField('Автор', max_length=200, default='')
+    year = models.IntegerField('Год издания', null=True, blank=True)
+    isbn = models.CharField('ISBN', max_length=20, blank=True, null=True)
+    publisher = models.CharField('Издательство', max_length=200, blank=True, null=True)
+    pages = models.IntegerField('Количество страниц', blank=True, null=True)
+
+    # Описание
+    genre = models.CharField('Жанр', max_length=50, choices=GENRE_CHOICES, default='')
+    description = models.TextField('Краткое описание', max_length=500, blank=True)
+    full_description = models.TextField('Полное описание', blank=True)
+
+    # Медиа-файлы
+    cover_image = models.ImageField('Обложка', upload_to='static/covers/', blank=True, null=True)
+    book_content = models.CharField('Файл книги', blank=True, null=True)
+    book_file = models.FileField('Файл книги', upload_to='static/books/', blank=True, null=True)
+
+    # Статус и количество
+    quantity = models.IntegerField('Количество экземпляров', default=1)
+    status = models.CharField('Статус', max_length=20, choices=STATUS_CHOICES, default='available')
+    language = models.CharField('Язык', max_length=20, choices=LANGUAGE_CHOICES, default='ru')
+
+    # Дополнительные параметры (флаги)
+    is_new = models.BooleanField('Новинка', default=False)
+    is_bestseller = models.BooleanField('Бестселлер', default=False)
+    is_recommended = models.BooleanField('Рекомендуемое', default=False)
+    for_kids = models.BooleanField('Детская литература', default=False)
+    limited_edition = models.BooleanField('Лимитированное издание', default=False)
+
+    # Даты
+    added_date = models.DateField('Дата добавления', default=timezone.now)
+    created_at = models.DateTimeField('Дата создания', auto_now_add=True, null=True)
+    updated_at = models.DateTimeField('Дата обновления', auto_now=True)
 
     class Meta:
-        verbose_name = "Книга"
-        verbose_name_plural = "Книги"
-
-    def display_genre(self):
-        return ', '.join(genre.name for genre in self.genre.all()[:3])
-
-    def get_absolute_url(self):
-        return reverse('book-detail', args=[str(self.id)])
+        verbose_name = 'Книга'
+        verbose_name_plural = 'Книги'
+        ordering = ['-created_at']
 
     def __str__(self):
-        return self.title
+        return f"{self.title} - {self.author}"
 
-class BookInstance(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Уникальный ID для этой копии книги во всей библиотеке")
-    book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True, verbose_name="Книга")
-    imprint = models.CharField(max_length=200, verbose_name="Издание")
-    due_back = models.DateField(null=True, blank=True, verbose_name="Дата возврата")
-    borrower = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Арендатор")
-
-    LOAN_STATUS = (
-        ('m', 'На обслуживании'),
-        ('o', 'Выдана'),
-        ('a', 'Доступна'),
-        ('r', 'Зарезервирована'),
-    )
-
-    status = models.CharField(
-        max_length=1,
-        choices=LOAN_STATUS,
-        blank=True,
-        default='m',
-        help_text='Доступность книги',
-        verbose_name="Статус"
-    )
-
-    class Meta:
-        ordering = ["due_back"]
-        permissions = (("can_mark_returned", "Set book as returned"),)
-        verbose_name = "Экземпляр книги"
-        verbose_name_plural = "Экземпляры книг"
-
-    def __str__(self):
-        return f'{self.id} ({self.book.title})'
+    def save(self, *args, **kwargs):
+        if int(self.quantity) <= 0:
+            self.status = 'out'
+        elif int(self.quantity) < 3 and self.status != 'out':
+            self.status = 'limited'
+        super().save(*args, **kwargs)

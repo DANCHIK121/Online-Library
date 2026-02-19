@@ -1,5 +1,8 @@
 import re
 import datetime
+
+from .models import Book
+
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.core.mail import send_mail
@@ -33,6 +36,35 @@ def personal_data_page(request):
 def add_book_page(request):
     return render(request, "AddBookPage.html")
 
+def live_book_page(request):
+    return render(request, "LiveBookPage.html")
+
+def admin_page(request):
+    total_books = Book.objects.count()
+
+    # Другие данные для статистики
+    active_readers = 342  # Это вы можете заменить на реальные данные из модели Reader
+    books_issued = 127  # Замените на реальные данные из модели IssuedBook
+    popular_books_count = Book.objects.filter(is_bestseller=True).count()  # Замените на реальные данные
+
+    context = {
+        'total_books': total_books,
+        'active_readers': active_readers,
+        'books_issued': books_issued,
+        'popular_books_count': popular_books_count,
+        'popular_books': [
+            {'title': 'Война и мир', 'author': 'Толстой Л.Н.', 'issues': 23},
+            {'title': 'Преступление и наказание', 'author': 'Достоевский Ф.М.', 'issues': 19},
+            {'title': 'Мастер и Маргарита', 'author': 'Булгаков М.А.', 'issues': 17},
+        ],
+        'overdue_books': [
+            {'reader': 'Иванов И.И.', 'book': 'Преступление и наказание', 'days': 5},
+            {'reader': 'Петрова А.С.', 'book': 'Анна Каренина', 'days': 2},
+            {'reader': 'Сидоров В.П.', 'book': 'Тихий Дон', 'days': 1},
+        ]
+    }
+
+    return render(request, 'AdminPage.html', context)
 
 
 
@@ -220,10 +252,110 @@ def user_login(request):
 #     except:
 #         pass
 
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
+@csrf_protect
+@login_required(login_url='/login_page/')
+def add_book(request):
+    """Обработка добавления новой книги в базу данных"""
+    if request.method == 'POST':
+        # Получаем данные из формы
+        title = request.POST.get('title')
+        author = request.POST.get('author')
+        year = request.POST.get('year')
+        isbn = request.POST.get('isbn', '')
+        publisher = request.POST.get('publisher', '')
+        pages = request.POST.get('pages')
+        genre = request.POST.get('genre')
+        description = request.POST.get('description', '')
+        full_description = request.POST.get('full_description', '')
+        quantity = request.POST.get('quantity', 1)
+        status = request.POST.get('status', 'available')
+        language = request.POST.get('language', 'ru')
+        added_date = request.POST.get('added_date', datetime.date.today())
 
+        cover_image = request.FILES.get('cover_image')
+        book_content = request.FILES.get('book_content')
+        book_file = request.FILES.get('book_file')
+
+        is_new = request.POST.get('is_new') == 'yes'
+        is_bestseller = request.POST.get('is_bestseller') == 'yes'
+        is_recommended = request.POST.get('is_recommended') == 'yes'
+        for_kids = request.POST.get('for_kids') == 'yes'
+        limited_edition = request.POST.get('limited_edition') == 'yes'
+
+        errors = []
+
+        if not all([title, author, year, genre]):
+            errors.append("Заполните все обязательные поля (название, автор, год, жанр)")
+
+        if year:
+            try:
+                year_int = int(year)
+                if year_int < 1000 or year_int > 2100:
+                    errors.append("Год должен быть между 1000 и 2100")
+            except ValueError:
+                errors.append("Год должен быть числом")
+
+        if pages:
+            try:
+                pages_int = int(pages)
+                if pages_int < 1:
+                    errors.append("Количество страниц должно быть положительным числом")
+            except ValueError:
+                errors.append("Количество страниц должно быть числом")
+
+        if quantity:
+            try:
+                quantity_int = int(quantity)
+                if quantity_int < 0:
+                    errors.append("Количество экземпляров не может быть отрицательным")
+            except ValueError:
+                errors.append("Количество экземпляров должно быть числом")
+
+        if isbn and len(isbn) > 20:
+            errors.append("ISBN не может быть длиннее 20 символов")
+
+        if isbn and Book.objects.filter(isbn=isbn).exists():
+            errors.append("Книга с таким ISBN уже существует")
+
+        if errors:
+            for error in errors:
+                messages.error(request, error)
+            return render(request, 'AddBookPage.html', {'form_data': request.POST})
+
+        try:
+            book = Book.objects.create(
+                title=title,
+                author=author,
+                year=year,
+                isbn=isbn if isbn else None,
+                publisher=publisher if publisher else None,
+                pages=pages if pages else None,
+                genre=genre,
+                description=description,
+                full_description=full_description,
+                quantity=quantity,
+                status=status,
+                language=language,
+                added_date=added_date,
+                cover_image=cover_image,
+                book_file=book_file,
+                book_content=book_content,
+                is_new=is_new,
+                is_bestseller=is_bestseller,
+                is_recommended=is_recommended,
+                for_kids=for_kids,
+                limited_edition=limited_edition
+            )
+
+            messages.success(request, f'Книга "{title}" успешно добавлена в библиотеку!')
+
+            return redirect('book_list')
+
+        except Exception as e:
+            messages.error(request, f'Ошибка при добавлении книги: {str(e)}')
+            return render(request, 'AddBookPage.html', {'form_data': request.POST})
+
+    return render(request, 'AddBookPage.html')
 
 def send_welcome_email(email, firstname):
     """Отправка приветственного письма с HTML оформлением"""

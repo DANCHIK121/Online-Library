@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Онлайн Библиотека | Просмотр книги</title>
+    <!-- Подключение иконки -->
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+    <!-- Подключение CSS для Django -->
+    <link rel="stylesheet" href="{% static 'css/LiveBookPageStyle.css' %}">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Шапка с навигацией -->
+        <header class="header">
+            <div class="container header-container">
+                <a href="/home/" class="logo">
+                    <i class="fas fa-book-open"></i>
+                    <span>Онлайн Библиотека</span>
+                </a>
+                <div class="nav-controls">
+                    <a href="/library/" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Вернуться в библиотеку
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Основной контент - просмотр книги -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Информация о книге -->
+                <div class="book-info-header">
+                    <div class="book-meta">
+                        <h1 class="book-title">Преступление и наказание</h1>
+                        <div class="book-author">
+                            <i class="fas fa-user"></i> Фёдор Достоевский
+                        </div>
+                        <div class="book-details">
+                            <span class="book-year"><i class="fas fa-calendar"></i> 1866</span>
+                            <span class="book-pages"><i class="fas fa-file-alt"></i> 672 стр.</span>
+                            <span class="book-genre"><i class="fas fa-tags"></i> Роман</span>
+                        </div>
+                    </div>
+
+                    <!-- Переключатель режимов просмотра -->
+                    <div class="view-toggle">
+                        <button class="toggle-btn active" data-view="pdf">
+                            <i class="fas fa-file-pdf"></i> PDF
+                        </button>
+                        <button class="toggle-btn" data-view="text">
+                            <i class="fas fa-file-alt"></i> Текст
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Сетка для контента и сайдбара -->
+                <div class="content-grid">
+                    <!-- Область просмотра книги -->
+                    <div class="viewer-container">
+                        <!-- PDF Viewer (активный по умолчанию) -->
+                        <div class="pdf-viewer active">
+                            <div class="pdf-toolbar">
+                                <div class="pdf-controls">
+                                    <button class="control-btn" id="prev-page">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <span class="page-info">
+                                        Страница <span id="current-page">1</span> из <span id="total-pages">0</span>
+                                    </span>
+                                    <button class="control-btn" id="next-page">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                                <div class="zoom-controls">
+                                    <button class="control-btn" id="zoom-out">
+                                        <i class="fas fa-search-minus"></i>
+                                    </button>
+                                    <span class="zoom-level" id="zoom-level">100%</span>
+                                    <button class="control-btn" id="zoom-in">
+                                        <i class="fas fa-search-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="pdf-container" id="pdf-container">
+                                <canvas id="pdf-canvas"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Text Viewer (скрыт по умолчанию) -->
+                        <div class="text-viewer">
+                            <div class="text-toolbar">
+                                <div class="text-controls">
+                                    <button class="control-btn" id="decrease-font">
+                                        <i class="fas fa-font"></i> -
+                                    </button>
+                                    <span class="font-size-info" id="font-size">16px</span>
+                                    <button class="control-btn" id="increase-font">
+                                        <i class="fas fa-font"></i> +
+                                    </button>
+                                </div>
+                                <button class="control-btn" id="toggle-theme">
+                                    <i class="fas fa-moon"></i> Тёмная тема
+                                </button>
+                            </div>
+
+                            <div class="text-container" id="text-container">
+                                <!-- Содержание книги будет загружаться сюда -->
+                                <div class="book-content">
+                                    <h2 class="chapter-title">Часть первая</h2>
+                                    <h3 class="chapter-subtitle">I</h3>
+                                    <p class="book-paragraph">
+                                        В начале июля, в чрезвычайно жаркое время, под вечер, один молодой человек вышел из своей каморки, которую нанимал от жильцов в С — м переулке, на улицу и медленно, как бы в нерешимости, отправился к К — ну мосту.
+                                    </p>
+                                    <p class="book-paragraph">
+                                        Он благополучно избегнул встречи с своею хозяйкой на лестнице. Каморка его приходилась под самою кровлей высокого пятиэтажного дома и походила более на шкаф, чем на квартиру. Квартирная же хозяйка его, у которой он нанимал эту каморку с обедом и прислугой, помещалась одною лестницей ниже, в отдельной квартире, и каждый раз, при выходе на улицу, ему непременно надо было проходить мимо хозяйкиной кухни, почти всегда настежь отворенной на лестницу. И каждый раз молодой человек, проходя мимо, чувствовал какое-то болезненное и трусливое ощущение, которого стыдился и от которого морщился. Он был должен кругом хозяйке и боялся с нею встретиться.
+                                    </p>
+                                    <p class="book-paragraph">
+                                        Не то чтоб он был так труслив и забит, совсем даже напротив; но с некоторого времени он был в раздражительном и напряженном состоянии, похожем на ипохондрию. Он до того углубился в себя и уединился от всех, что боялся даже всякой встречи, не только встречи с хозяйкой. Он был задавлен бедностью; но даже стесненное положение перестало в последнее время тяготить его. Насущными делами своими он совсем перестал и не хотел заниматься. Никакой хозяйки, в сущности, он не боялся, что бы та ни умышляла против него. Но останавливаться на лестнице, слушать всякий вздор про всю эту обыденную дребедень, до которой ему нет никакого дела, все эти приставания о платеже, угрозы, жалобы, и при этом самому изворачиваться, извиняться, лгать, — нет уж, лучше проскользнуть как-нибудь кошкой по лестнице и уйти незамеченным.
+                                    </p>
+                                    <!-- Продолжение текста для демонстрации прокрутки -->
+                                    <p class="book-paragraph">
+                                        Впрочем, на этот раз страх встречи с своею кредиторшей даже его самого поразил по выходе на улицу.
+                                    </p>
+                                    <p class="book-paragraph">
+                                        «На какое дело хочу покуситься и в то же время каких пустяков боюсь! — подумал он с странною улыбкой. — Гм... да... всё в руках человека, и всё-то он мимо носу проносит, единственно от одной трусости... это уж аксиома... Любопытно, чего люди больше всего боятся? Нового шага, нового собственного слова они всего больше боятся... А впрочем, я слишком много болтаю. Оттого и ничего не делаю, что болтаю. Пожалуй, впрочем, и так: оттого болтаю, что ничего не делаю. Это я в этот последний месяц выучился болтать, лежа по целым суткам в углу и думая... о царе Горохе. Ну зачем я теперь иду? Разве я способен на это? Разве это серьезно? Совсем не серьезно. Так, ради фантазии сам себя тешу; игрушки! Да, пожалуй что и игрушки!»
+                                    </p>
+                                    <!-- Добавлено больше контента для демонстрации скролла -->
+                                    <div style="height: 400px; background: linear-gradient(180deg, transparent, rgba(0,0,0,0.05)); margin: 30px 0; border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #7f95b0;">
+                                        <i class="fas fa-arrow-down" style="margin-right: 10px;"></i> Продолжение текста для демонстрации прокрутки <i class="fas fa-arrow-down" style="margin-left: 10px;"></i>
+                                    </div>
+                                    <p class="book-paragraph">
+                                        На улице жара стояла страшная, к тому же духота, толкотня, всюду известка, леса, кирпич, пыль и та особенная летняя вонь, столь известная каждому петербуржцу, не имеющему возможности нанять дачу, — всё это разом неприятно потрясло и без того расстроенные нервы юноши. Нестерпимая же вонь из распивочных, которых в этой части города особенное множество, и пьяные, поминутно попадавшиеся, несмотря на буднее время, довершили отвратительный и грустный колорит картины. Чувство глубочайшего омерзения мелькнуло на миг в тонких чертах молодого человека. Кстати, он был замечательно хорош собою, с прекрасными темными глазами, темно-рус, ростом выше среднего, тонок и строен. Но скоро он впал как бы в глубокую задумчивость, даже, вернее сказать, как бы в какую-то задумчивость и даже пошел, уже не замечая окружающего и не желая его замечать. Изредка бормотал он что-то про себя, от своей привычки к монологам, в которой он сейчас сам себе признался. В эту же минуту он и сам сознавал, что мысли его порою мешаются и что он очень слаб: второй день как уж он почти совсем ничего не ел.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Содержание книги (сайдбар) -->
+                    <div class="book-sidebar" id="book-sidebar">
+                        <div class="sidebar-header">
+                            <h2><i class="fas fa-list"></i> Содержание</h2>
+                            <button class="collapse-btn" id="toggle-sidebar">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                        </div>
+                        <div class="table-of-contents" id="table-of-contents">
+                            <div class="content-section">
+                                <div class="content-item main-chapter active">
+                                    <span class="chapter-marker"><i class="fas fa-book-open"></i></span>
+                                    <span class="chapter-title">Часть первая</span>
+                                    <span class="chapter-pages">стр. 1-152</span>
+                                </div>
+                                <div class="content-subitems">
+                                    <div class="content-item subchapter">
+                                        <span class="chapter-marker">I</span>
+                                        <span class="chapter-title">Глава I</span>
+                                        <span class="chapter-pages">1-15</span>
+                                    </div>
+                                    <div class="content-item subchapter">
+                                        <span class="chapter-marker">II</span>
+                                        <span class="chapter-title">Глава II</span>
+                                        <span class="chapter-pages">16-32</span>
+                                    </div>
+                                    <div class="content-item subchapter">
+                                        <span class="chapter-marker">III</span>
+                                        <span class="chapter-title">Глава III</span>
+                                        <span class="chapter-pages">33-48</span>
+                                    </div>
+                                    <div class="content-item subchapter">
+                                        <span class="chapter-marker">IV</span>
+                                        <span class="chapter-title">Глава IV</span>
+                                        <span class="chapter-pages">49-67</span>
+                                    </div>
+                                    <div class="content-item subchapter">
+                                        <span class="chapter-marker">V</span>
+                                        <span class="chapter-title">Глава V</span>
+                                        <span class="chapter-pages">68-89</span>
+                                    </div>
+                                    <div class="content-item subchapter">
+                                        <span class="chapter-marker">VI</span>
+                                        <span class="chapter-title">Глава VI</span>
+                                        <span class="chapter-pages">90-112</span>
+                                    </div>
+                                    <div class="content-item subchapter">
+                                        <span class="chapter-marker">VII</span>
+                                        <span class="chapter-title">Глава VII</span>
+                                        <span class="chapter-pages">113-152</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <div class="content-item main-chapter">
+                                    <span class="chapter-marker"><i class="fas fa-book-open"></i></span>
+                                    <span class="chapter-title">Часть вторая</span>
+                                    <span class="chapter-pages">стр. 153-298</span>
+                                </div>
+                                <div class="content-subitems" style="display: none;">
+                                    <!-- Подглавы будут здесь -->
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <div class="content-item main-chapter">
+                                    <span class="chapter-marker"><i class="fas fa-book-open"></i></span>
+                                    <span class="chapter-title">Часть третья</span>
+                                    <span class="chapter-pages">стр. 299-450</span>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <div class="content-item main-chapter">
+                                    <span class="chapter-marker"><i class="fas fa-book-open"></i></span>
+                                    <span class="chapter-title">Часть четвёртая</span>
+                                    <span class="chapter-pages">стр. 451-590</span>
+                                </div>
+                            </div>
+
+                            <div class="content-section">
+                                <div class="content-item main-chapter">
+                                    <span class="chapter-marker"><i class="fas fa-book-open"></i></span>
+                                    <span class="chapter-title">Часть пятая</span>
+                                    <span class="chapter-pages">стр. 591-672</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Подвал -->
+        <footer class="footer">
+            <div class="container footer-container">
+                <div class="footer-info">
+                    <p>© 2026 Онлайн Библиотека. Читайте с удовольствием.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Помощь</a>
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Поддержка</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Оверлей для мобильного сайдбара -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- Подключение скриптов -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+        // Установка worker для PDF.js
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Элементы для PDF
+            const pdfContainer = document.getElementById('pdf-container');
+            const canvas = document.getElementById('pdf-canvas');
+            const ctx = canvas.getContext('2d');
+            const prevPageBtn = document.getElementById('prev-page');
+            const nextPageBtn = document.getElementById('next-page');
+            const currentPageSpan = document.getElementById('current-page');
+            const totalPagesSpan = document.getElementById('total-pages');
+            const zoomInBtn = document.getElementById('zoom-in');
+            const zoomOutBtn = document.getElementById('zoom-out');
+            const zoomLevelSpan = document.getElementById('zoom-level');
+
+            // Элементы для текста
+            const textContainer = document.getElementById('text-container');
+            const decreaseFontBtn = document.getElementById('decrease-font');
+            const increaseFontBtn = document.getElementById('increase-font');
+            const fontSizeSpan = document.getElementById('font-size');
+            const toggleThemeBtn = document.getElementById('toggle-theme');
+
+            // Элементы переключения вьюверов
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+            const pdfViewer = document.querySelector('.pdf-viewer');
+            const textViewer = document.querySelector('.text-viewer');
+
+            // Элементы сайдбара
+            const toggleSidebarBtn = document.getElementById('toggle-sidebar');
+            const bookSidebar = document.getElementById('book-sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+            // Переменные для PDF
+            let pdfDoc = null;
+            let pageNum = 1;
+            let pageRendering = false;
+            let pageNumPending = null;
+            let scale = 1.0;
+
+            // Загрузка демо PDF
+            const pdfUrl = '{% static "books/Куприн_Александр._Чудесный_доктор.pdf" %}';
+
+            // Загружаем PDF (если есть)
+            pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_) {
+                pdfDoc = pdfDoc_;
+                totalPagesSpan.textContent = pdfDoc.numPages;
+
+                // Загружаем первую страницу
+                renderPage(pageNum);
+            }).catch(function(error) {
+                console.log('PDF не найден, используется демо-режим', error);
+                totalPagesSpan.textContent = '0';
+                // Показываем заглушку
+                if (ctx) {
+                    ctx.font = '16px Inter';
+                    ctx.fillStyle = '#7f95b0';
+                    ctx.fillText('PDF файл не загружен', 100, 200);
+                }
+            });
+
+            // Функция отображения страницы PDF
+            function renderPage(num) {
+                if (!pdfDoc) return;
+
+                pageRendering = true;
+
+                pdfDoc.getPage(num).then(function(page) {
+                    const viewport = page.getViewport({ scale: scale });
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+
+                    const renderContext = {
+                        canvasContext: ctx,
+                        viewport: viewport
+                    };
+
+                    const renderTask = page.render(renderContext);
+                    renderTask.promise.then(function() {
+                        pageRendering = false;
+                        if (pageNumPending !== null) {
+                            renderPage(pageNumPending);
+                            pageNumPending = null;
+                        }
+                    });
+                });
+
+                currentPageSpan.textContent = num;
+            }
+
+            // Функция перелистывания страниц
+            function queueRenderPage(num) {
+                if (pageRendering) {
+                    pageNumPending = num;
+                } else {
+                    renderPage(num);
+                }
+            }
+
+            // Навигация по страницам
+            if (prevPageBtn) {
+                prevPageBtn.addEventListener('click', function() {
+                    if (pageNum <= 1) return;
+                    pageNum--;
+                    queueRenderPage(pageNum);
+                });
+            }
+
+            if (nextPageBtn) {
+                nextPageBtn.addEventListener('click', function() {
+                    if (pdfDoc && pageNum >= pdfDoc.numPages) return;
+                    pageNum++;
+                    queueRenderPage(pageNum);
+                });
+            }
+
+            // Зум PDF
+            if (zoomInBtn) {
+                zoomInBtn.addEventListener('click', function() {
+                    if (scale >= 3) return;
+                    scale += 0.25;
+                    zoomLevelSpan.textContent = Math.round(scale * 100) + '%';
+                    queueRenderPage(pageNum);
+                });
+            }
+
+            if (zoomOutBtn) {
+                zoomOutBtn.addEventListener('click', function() {
+                    if (scale <= 0.5) return;
+                    scale -= 0.25;
+                    zoomLevelSpan.textContent = Math.round(scale * 100) + '%';
+                    queueRenderPage(pageNum);
+                });
+            }
+
+            // Переключение между PDF и текстом
+            toggleButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    toggleButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    if (this.dataset.view === 'pdf') {
+                        pdfViewer.classList.add('active');
+                        textViewer.classList.remove('active');
+                    } else {
+                        pdfViewer.classList.remove('active');
+                        textViewer.classList.add('active');
+                    }
+                });
+            });
+
+            // Изменение размера шрифта в текстовом режиме
+            let currentFontSize = 16;
+
+            if (increaseFontBtn) {
+                increaseFontBtn.addEventListener('click', function() {
+                    if (currentFontSize >= 32) return;
+                    currentFontSize += 2;
+                    textContainer.style.fontSize = currentFontSize + 'px';
+                    fontSizeSpan.textContent = currentFontSize + 'px';
+                });
+            }
+
+            if (decreaseFontBtn) {
+                decreaseFontBtn.addEventListener('click', function() {
+                    if (currentFontSize <= 12) return;
+                    currentFontSize -= 2;
+                    textContainer.style.fontSize = currentFontSize + 'px';
+                    fontSizeSpan.textContent = currentFontSize + 'px';
+                });
+            }
+
+            // Переключение темы текста
+            if (toggleThemeBtn) {
+                toggleThemeBtn.addEventListener('click', function() {
+                    textContainer.classList.toggle('dark-theme');
+                    const icon = this.querySelector('i');
+                    if (textContainer.classList.contains('dark-theme')) {
+                        icon.className = 'fas fa-sun';
+                        this.innerHTML = '<i class="fas fa-sun"></i> Светлая тема';
+                    } else {
+                        icon.className = 'fas fa-moon';
+                        this.innerHTML = '<i class="fas fa-moon"></i> Тёмная тема';
+                    }
+                });
+            }
+
+            // Сворачивание/разворачивание сайдбара
+            if (toggleSidebarBtn) {
+                toggleSidebarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    bookSidebar.classList.toggle('collapsed');
+                    const icon = this.querySelector('i');
+
+                    if (bookSidebar.classList.contains('collapsed')) {
+                        icon.className = 'fas fa-chevron-right';
+                        if (window.innerWidth <= 1000) {
+                            sidebarOverlay.classList.remove('active');
+                        }
+                    } else {
+                        icon.className = 'fas fa-chevron-left';
+                        if (window.innerWidth <= 1000) {
+                            sidebarOverlay.classList.add('active');
+                        }
+                    }
+                });
+            }
+
+            // Закрытие сайдбара по оверлею
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', function() {
+                    bookSidebar.classList.add('collapsed');
+                    toggleSidebarBtn.querySelector('i').className = 'fas fa-chevron-right';
+                    sidebarOverlay.classList.remove('active');
+                });
+            }
+
+            // Разворачивание/сворачивание подглав в содержании
+            document.querySelectorAll('.main-chapter').forEach(chapter => {
+                chapter.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const section = this.closest('.content-section');
+                    const subitems = section.querySelector('.content-subitems');
+
+                    if (subitems) {
+                        if (subitems.style.display === 'none' || !subitems.style.display) {
+                            subitems.style.display = 'block';
+                        } else {
+                            subitems.style.display = 'none';
+                        }
+                    }
+                });
+            });
+
+            // Активация пунктов содержания при клике
+            document.querySelectorAll('.content-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    document.querySelectorAll('.content-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // На мобильных устройствах сворачиваем сайдбар после выбора главы
+                    if (window.innerWidth <= 1000) {
+                        bookSidebar.classList.add('collapsed');
+                        toggleSidebarBtn.querySelector('i').className = 'fas fa-chevron-right';
+                        sidebarOverlay.classList.remove('active');
+                    }
+                });
+            });
+
+            // Адаптация для мобильных устройств
+            function checkMobile() {
+                if (window.innerWidth <= 1000) {
+                    bookSidebar.classList.add('collapsed');
+                    if (toggleSidebarBtn) {
+                        toggleSidebarBtn.querySelector('i').className = 'fas fa-chevron-right';
+                    }
+                    sidebarOverlay.classList.remove('active');
+                } else {
+                    bookSidebar.classList.remove('collapsed');
+                    if (toggleSidebarBtn) {
+                        toggleSidebarBtn.querySelector('i').className = 'fas fa-chevron-left';
+                    }
+                }
+            }
+
+            checkMobile();
+            window.addEventListener('resize', checkMobile);
+
+            // Предотвращаем закрытие при клике внутри сайдбара
+            bookSidebar.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+    </script>
+</body>
+</html>

@@ -18,12 +18,11 @@
         <!-- Шапка с навигацией админки -->
         <header class="header">
             <div class="container header-container">
-                <div class="logo">
+                <a href="/home/" class="logo" style="text-decoration: none;">
                     <i class="fas fa-book-open"></i>
-                    <span>Онлайн Библиотека | Админ-панель</span>
-                </div>
+                    <span>Онлайн Библиотека</span>
+                </a>
                 <div class="auth-buttons">
-                    <a href="/admin_dashboard/" class="btn btn-outline"><i class="fas fa-tachometer-alt"></i> Дашборд</a>
                     <a href="/logout/" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i> Выйти</a>
                 </div>
             </div>
@@ -34,7 +33,7 @@
             <div class="container">
                 <!-- Навигационная цепочка (хлебные крошки) -->
                 <div class="breadcrumbs">
-                    <a href="/admin_dashboard/"><i class="fas fa-home"></i> Главная админки</a>
+                    <a href="/admin/"><i class="fas fa-home"></i> Главная админки</a>
                     <i class="fas fa-chevron-right"></i>
                     <span>Добавление книги</span>
                 </div>
@@ -47,7 +46,7 @@
 
                 <!-- Форма добавления книги -->
                 <div class="form-container">
-                    <form method="POST" enctype="multipart/form-data" class="book-form">
+                    <form method="POST" enctype="multipart/form-data" class="book-form" action="{% url 'add_book' %}">
                         {% csrf_token %}
 
                         <!-- Основная информация о книге -->
@@ -199,6 +198,16 @@
                                     </div>
                                 </div>
 
+                                <!-- Содержание книги -->
+                                <div class="form-group">
+                                    <label for="book-content">
+                                        <i class="fas fa-file-pdf"></i> Содержание книги
+                                    </label>
+                                    <div class="file-input-wrapper">
+                                        <input type="text" id="book-content" name="book_content"  class="form-control">
+                                    </div>
+                                </div>
+
                                 <!-- Количество экземпляров -->
                                 <div class="form-group">
                                     <label for="book-quantity">
@@ -321,6 +330,42 @@
                 </div>
             </div>
         </footer>
+
+        <script>
+        // Автоматическое обновление статуса при изменении количества
+        document.addEventListener('DOMContentLoaded', function() {
+            const quantityInput = document.getElementById('book-quantity');
+            const statusSelect = document.getElementById('book-status');
+
+            if (quantityInput && statusSelect) {
+                quantityInput.addEventListener('input', function() {
+                    const quantity = parseInt(this.value) || 0;
+
+                    if (quantity <= 0) {
+                        statusSelect.value = 'out';
+                    } else if (quantity < 3) {
+                        statusSelect.value = 'limited';
+                    } else {
+                        statusSelect.value = 'available';
+                    }
+                });
+            }
+
+            // Предпросмотр обложки
+            const coverInput = document.getElementById('book-cover');
+            if (coverInput) {
+                coverInput.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const preview = this.closest('.file-input-wrapper').querySelector('.file-input-preview span');
+                        if (preview) {
+                            preview.textContent = file.name;
+                        }
+                    }
+                });
+            }
+        });
+        </script>
     </div>
 </body>
 </html>

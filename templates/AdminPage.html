@@ -63,7 +63,7 @@
                         </div>
                         <h3>Добавить книгу</h3>
                         <p>Пополните фонд новой литературой</p>
-                        <a href="#" class="action-link">Перейти <i class="fas fa-arrow-right"></i></a>
+                        <a href="/add_book_page/" class="action-link">Перейти <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="action-card">
                         <div class="icon-circle green">
@@ -71,7 +71,7 @@
                         </div>
                         <h3>Новый читатель</h3>
                         <p>Зарегистрируйте посетителя</p>
-                        <a href="#" class="action-link">Перейти <i class="fas fa-arrow-right"></i></a>
+                        <a href="/login_page/" class="action-link">Перейти <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="action-card">
                         <div class="icon-circle orange">
@@ -98,30 +98,36 @@
                         <h2><i class="fas fa-chart-pie"></i> Статистика</h2>
                         <div class="stats-grid">
                             <div class="stat-item">
-                                <span class="stat-value">1 284</span>
+                                <span class="stat-value">{{ total_books|default:"0" }}</span>
                                 <span class="stat-label">Книг в фонде</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-value">342</span>
+                                <span class="stat-value">{{ active_readers|default:"0" }}</span>
                                 <span class="stat-label">Активных читателей</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-value">127</span>
+                                <span class="stat-value">{{ books_issued|default:"0" }}</span>
                                 <span class="stat-label">Книг выдано</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-value">15</span>
+                                <span class="stat-value">{{ popular_books_count|default:"0" }}</span>
                                 <span class="stat-label">Популярных книг</span>
                             </div>
                         </div>
                         <!-- Популярные книги (мини-список) -->
                         <h3 style="margin-top: 25px;">Самые популярные</h3>
                         <ul class="popular-list">
-                            <li><i class="fas fa-star"></i> "Война и мир" - 23 выдачи</li>
-                            <li><i class="fas fa-star"></i> "Преступление и наказание" - 19 выдач</li>
-                            <li><i class="fas fa-star"></i> "Мастер и Маргарита" - 17 выдач</li>
+                            {% for book in popular_books %}
+                            <li>
+                                <i class="fas fa-star"></i>
+                                "{{ book.title }}" - {{ book.issues }} выдач
+                            </li>
+                            {% empty %}
+                            <li>Нет данных о популярных книгах</li>
+                            {% endfor %}
                         </ul>
                     </div>
+
                     <!-- Правая колонка: Уведомления о просрочках -->
                     <div class="overdue-panel">
                         <h2><i class="fas fa-exclamation-triangle"></i> Просрочки возврата</h2>
@@ -129,27 +135,17 @@
                             <i class="fas fa-envelope"></i> Отправлено уведомление
                         </div>
                         <ul class="overdue-list">
+                            {% for overdue in overdue_books %}
                             <li>
                                 <div class="reader-info">
-                                    <strong>Иванов И.И.</strong>
-                                    <span class="book-title">"Преступление и наказание"</span>
+                                    <strong>{{ overdue.reader }}</strong>
+                                    <span class="book-title">"{{ overdue.book }}"</span>
                                 </div>
-                                <span class="badge overdue-badge">+5 дней</span>
+                                <span class="badge overdue-badge">+{{ overdue.days }} дней</span>
                             </li>
-                            <li>
-                                <div class="reader-info">
-                                    <strong>Петрова А.С.</strong>
-                                    <span class="book-title">"Анна Каренина"</span>
-                                </div>
-                                <span class="badge overdue-badge">+2 дня</span>
-                            </li>
-                            <li>
-                                <div class="reader-info">
-                                    <strong>Сидоров В.П.</strong>
-                                    <span class="book-title">"Тихий Дон"</span>
-                                </div>
-                                <span class="badge overdue-badge">+1 день</span>
-                            </li>
+                            {% empty %}
+                            <li>Нет просрочек возврата</li>
+                            {% endfor %}
                         </ul>
                         <a href="#" class="btn btn-outline">Отправить напоминания</a>
                     </div>
@@ -181,8 +177,7 @@
             <div class="container">
                 <p>© 2026 Система учёта библиотечных книг.</p>
                 <p class="footer-links">
-                    <a href="#">Техническая документация</a> |
-                    <a href="#">GitHub</a>
+                    <a href="https://github.com/DANCHIK121/Online-Library">GitHub</a>
                 </p>
             </div>
         </footer>
