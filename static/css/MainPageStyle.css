@@ -104,11 +104,14 @@ body {
 }
 
 .btn-small {
-    padding: 6px 16px;
+    padding: 8px 16px;
     font-size: 0.85rem;
     background: #f0f5fc;
     color: #1f3a5f;
     border: 1px solid #e2e8f0;
+    width: 100%;
+    justify-content: center;
+    margin-top: 5px;
 }
 
 .btn-small:hover {
@@ -262,10 +265,11 @@ body {
     background: #f0f5fc;
 }
 
+/* Увеличенные карточки для книг */
 .books-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 25px;
+    gap: 30px;
     margin-bottom: 30px;
 }
 
@@ -275,79 +279,179 @@ body {
 
 .book-card {
     background: white;
-    border-radius: 20px;
+    border-radius: 24px;
     overflow: hidden;
     border: 1px solid #eef2f6;
-    transition: box-shadow 0.3s;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 260px;
 }
 
 .book-card:hover {
-    box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
+    box-shadow: 0 15px 30px -10px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
 }
 
 .book-cover {
-    height: 160px;
+    height: 280px;
     background: linear-gradient(145deg, #e6eef7, #d9e2ec);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #7b95ad;
-    font-size: 4rem;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Бейджи для книг */
+.book-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+}
+
+.badge-new {
+    background: #2b6c5e;
+    color: white;
+}
+
+.badge-bestseller {
+    background: #c9773b;
+    color: white;
+}
+
+.badge-limited {
+    background: #1f3a5f;
+    color: white;
 }
 
 .book-info {
-    padding: 20px;
+    padding: 24px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .book-info h3 {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 700;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     color: #1a2b3e;
-}
+    line-height: 1.4;
 
-.author {
-    color: #64748b;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-}
-
-.description {
-    color: #4a607a;
-    font-size: 0.85rem;
-    margin-bottom: 15px;
-    line-height: 1.5;
+    /* Ограничение названия до 2 строк */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    min-height: 3.2rem;
+}
+
+.author {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    font-weight: 500;
+
+    /* Ограничение автора до 1 строки */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.description {
+    color: #4a607a;
+    font-size: 0.9rem;
+    margin-bottom: 18px;
+    line-height: 1.5;
+    flex: 1;
+
+    /* Ограничение описания до 3 строк */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 4.2rem;
 }
 
 .book-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    font-size: 0.85rem;
+    margin-bottom: 18px;
+    font-size: 0.9rem;
+    padding: 10px 0;
+    border-top: 1px solid #edf2f7;
+    border-bottom: 1px solid #edf2f7;
 }
 
 .year {
     color: #7f95b0;
-    font-weight: 500;
+    font-weight: 600;
+    background: #f0f5fc;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
 }
 
 .status {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+
+.status i {
+    font-size: 0.9rem;
 }
 
 .status.available {
     color: #2b6c5e;
+    background: rgba(43, 108, 94, 0.1);
 }
 
 .status.limited {
     color: #c9773b;
+    background: rgba(201, 119, 59, 0.1);
+}
+
+.status.out {
+    color: #b91c1c;
+    background: rgba(185, 28, 28, 0.1);
+}
+
+.status.expected {
+    color: #1f3a5f;
+    background: rgba(31, 58, 95, 0.1);
+}
+
+.language-badge {
+    display: inline-block;
+    background: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    color: #4a607a;
+    margin-left: 5px;
 }
 
 /* CTA секция */
@@ -409,6 +513,7 @@ body {
     background: white;
     border-top: 1px solid #eef2f6;
     padding: 30px 0;
+    margin-top: auto;
 }
 
 .footer-container {
@@ -445,7 +550,34 @@ body {
     font-size: 1.2rem;
 }
 
-/* Адаптивность */
+/* Сообщение, если книг нет */
+.no-books {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    background: white;
+    border-radius: 20px;
+    border: 2px dashed #e2e8f0;
+}
+
+.no-books i {
+    font-size: 3rem;
+    color: #a0b8cf;
+    margin-bottom: 15px;
+}
+
+.no-books p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+/* Адаптивность для увеличенных карточек */
+@media (max-width: 1400px) {
+    .books-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
 @media (max-width: 1100px) {
     .books-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -459,26 +591,43 @@ body {
         grid-template-columns: 1fr;
         text-align: center;
     }
-    
+
     .hero-content h1 {
         font-size: 2.2rem;
     }
-    
+
     .hero-stats {
         justify-content: center;
         flex-wrap: wrap;
     }
-    
+
     .hero-image {
         display: none;
     }
-    
+
     .auth-buttons {
         gap: 8px;
     }
-    
+
     .btn {
         padding: 8px 16px;
+    }
+}
+
+@media (max-width: 700px) {
+    .books-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .book-card {
+        max-width: 100%;
+    }
+
+    .book-cover {
+        height: 300px;
     }
 }
 
@@ -489,8 +638,23 @@ body {
         padding: 15px 0;
         gap: 15px;
     }
-    
-    .books-grid {
-        grid-template-columns: 1fr;
+
+    .container {
+        padding: 0 20px;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
     }
 }

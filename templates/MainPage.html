@@ -70,7 +70,7 @@
                     <div class="about-card">
                         <i class="fas fa-gift"></i>
                         <h3>Бесплатно</h3>
-                        <p>100% бесплатное обслуживание для всех жителей города.</p>
+                        <p>100% бесплатное обслуживание для всех.</p>
                     </div>
                 </div>
             </div>
@@ -84,146 +84,99 @@
                     <a href="#" class="view-all">Смотреть все новинки <i class="fas fa-arrow-right"></i></a>
                 </div>
 
+                <!-- Исправленная сетка книг -->
                 <div class="books-grid">
-                    <!-- Карточка книги 1 -->
+                    {% for book in books %}
                     <div class="book-card">
                         <div class="book-cover">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="book-info">
-                            <h3>Мастер и Маргарита</h3>
-                            <p class="author">Михаил Булгаков</p>
-                            <p class="description">Великий роман о любви, дьяволе и Москве. Новое иллюстрированное издание.</p>
-                            <div class="book-meta">
-                                <span class="year">2025</span>
-                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
-                            </div>
-                            <a href="#" class="btn btn-small">Подробнее</a>
-                        </div>
-                    </div>
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+                            {% else %}
+                                <i class="fas fa-book"></i>
+                            {% endif %}
 
-                    <!-- Карточка книги 2 -->
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class="fas fa-book"></i>
+                            <!-- Бейджи для книг (добавлены) -->
+                            {% if book.is_new %}
+                                <span class="book-badge badge-new">Новинка</span>
+                            {% endif %}
+                            {% if book.is_bestseller %}
+                                <span class="book-badge badge-bestseller">Бестселлер</span>
+                            {% endif %}
+                            {% if book.limited_edition %}
+                                <span class="book-badge badge-limited">Лимитированное</span>
+                            {% endif %}
                         </div>
                         <div class="book-info">
-                            <h3>1984</h3>
-                            <p class="author">Джордж Оруэлл</p>
-                            <p class="description">Культовая антиутопия о тотальном контроле. Юбилейное издание.</p>
+                            <h3 title="{{ book.title }}">{{ book.title }}</h3>
+                            <p class="author" title="{{ book.author }}">{{ book.author }}</p>
+                            <p class="description" title="{{ book.description|default:'Описание отсутствует' }}">
+                                {{ book.description|default:"Описание отсутствует"|truncatechars:100 }}
+                            </p>
                             <div class="book-meta">
-                                <span class="year">2024</span>
-                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
-                            </div>
-                            <a href="#" class="btn btn-small">Подробнее</a>
-                        </div>
-                    </div>
+                                {% if book.year %}
+                                    <span class="year">{{ book.year }}</span>
+                                {% else %}
+                                    <span class="year">Год неизв.</span>
+                                {% endif %}
 
-                    <!-- Карточка книги 3 -->
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="book-info">
-                            <h3>Маленький принц</h3>
-                            <p class="author">Антуан де Сент-Экзюпери</p>
-                            <p class="description">Новый перевод с оригинальными иллюстрациями автора.</p>
-                            <div class="book-meta">
-                                <span class="year">2025</span>
-                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
-                            </div>
-                            <a href="#" class="btn btn-small">Подробнее</a>
-                        </div>
-                    </div>
+                                <span class="status
+                                    {% if book.status == 'available' %}available
+                                    {% elif book.status == 'limited' %}limited
+                                    {% elif book.status == 'out' %}out
+                                    {% elif book.status == 'expected' %}expected
+                                    {% endif %}">
+                                    <i class="fas
+                                        {% if book.status == 'available' %}fa-check-circle
+                                        {% elif book.status == 'limited' %}fa-hourglass-half
+                                        {% elif book.status == 'out' %}fa-times-circle
+                                        {% elif book.status == 'expected' %}fa-clock
+                                        {% else %}fa-question-circle
+                                        {% endif %}"></i>
 
-                    <!-- Карточка книги 4 -->
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="book-info">
-                            <h3>Преступление и наказание</h3>
-                            <p class="author">Фёдор Достоевский</p>
-                            <p class="description">Подарочное издание с комментариями и статьями.</p>
-                            <div class="book-meta">
-                                <span class="year">2024</span>
-                                <span class="status limited"><i class="fas fa-hourglass-half"></i> Осталось 2 экз.</span>
+                                    {% if book.status == 'available' %}
+                                        В наличии
+                                        {% if book.quantity > 1 %}
+                                            ({{ book.quantity }})
+                                        {% endif %}
+                                    {% elif book.status == 'limited' %}
+                                        Осталось {{ book.quantity }} экз.
+                                    {% elif book.status == 'out' %}
+                                        Нет в наличии
+                                    {% elif book.status == 'expected' %}
+                                        Ожидается
+                                    {% else %}
+                                        {{ book.get_status_display }}
+                                    {% endif %}
+                                </span>
                             </div>
-                            <a href="#" class="btn btn-small">Подробнее</a>
+
+                            <!-- Язык книги (если не русский) -->
+                            {% if book.language != 'ru' %}
+                                <div class="language-wrapper">
+                                    <span class="language-badge">{{ book.get_language_display }}</span>
+                                </div>
+                            {% endif %}
+
+                            <a href="#" class="btn btn-small">
+                                <i class="fas fa-info-circle"></i> Подробнее
+                            </a>
                         </div>
                     </div>
+                    {% empty %}
+                    <!-- Если книг нет в БД -->
+                    <div class="no-books">
+                        <i class="fas fa-book-open"></i>
+                        <p>Книги пока не добавлены в базу данных</p>
+                    </div>
+                    {% endfor %}
                 </div>
 
-                <!-- Вторая строка новинок -->
-                <div class="books-grid second-row">
-                    <!-- Карточка книги 5 -->
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="book-info">
-                            <h3>Тихий Дон</h3>
-                            <p class="author">Михаил Шолохов</p>
-                            <p class="description">Роман-эпопея в двух томах. Новое оформление.</p>
-                            <div class="book-meta">
-                                <span class="year">2025</span>
-                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
-                            </div>
-                            <a href="#" class="btn btn-small">Подробнее</a>
-                        </div>
-                    </div>
-
-                    <!-- Карточка книги 6 -->
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="book-info">
-                            <h3>Гарри Поттер и философский камень</h3>
-                            <p class="author">Дж. К. Роулинг</p>
-                            <p class="description">Юбилейное издание с иллюстрациями.</p>
-                            <div class="book-meta">
-                                <span class="year">2025</span>
-                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
-                            </div>
-                            <a href="#" class="btn btn-small">Подробнее</a>
-                        </div>
-                    </div>
-
-                    <!-- Карточка книги 7 -->
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="book-info">
-                            <h3>Сто лет одиночества</h3>
-                            <p class="author">Габриэль Гарсиа Маркес</p>
-                            <p class="description">Легендарный роман магического реализма.</p>
-                            <div class="book-meta">
-                                <span class="year">2024</span>
-                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
-                            </div>
-                            <a href="#" class="btn btn-small">Подробнее</a>
-                        </div>
-                    </div>
-
-                    <!-- Карточка книги 8 -->
-                    <div class="book-card">
-                        <div class="book-cover">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <div class="book-info">
-                            <h3>Убить пересмешника</h3>
-                            <p class="author">Харпер Ли</p>
-                            <p class="description">Пулитцеровская премия. Новый перевод.</p>
-                            <div class="book-meta">
-                                <span class="year">2025</span>
-                                <span class="status available"><i class="fas fa-check-circle"></i> В наличии</span>
-                            </div>
-                            <a href="#" class="btn btn-small">Подробнее</a>
-                        </div>
-                    </div>
+                <!-- Показываем, сколько книг загружено (опционально) -->
+                {% if books %}
+                <div class="books-count">
+                    <p>Показано {{ books|length }} книг</p>
                 </div>
+                {% endif %}
             </div>
         </section>
 
@@ -257,5 +210,26 @@
             </div>
         </footer>
     </div>
+
+    <!-- Небольшой дополнительный стиль для счетчика книг -->
+    <style>
+        .books-count {
+            text-align: center;
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .language-wrapper {
+            margin-bottom: 10px;
+        }
+
+        /* Улучшенные подсказки при наведении */
+        .book-info h3[title],
+        .author[title],
+        .description[title] {
+            cursor: help;
+        }
+    </style>
 </body>
 </html>

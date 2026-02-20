@@ -16,7 +16,13 @@ User = get_user_model()
 
 # Render pages
 def home_page(request):
-    return render(request, "MainPage.html")
+    books = Book.objects.all()
+
+    context = {
+        "books": books,
+    }
+
+    return render(request, "MainPage.html", context)
 
 def register_page(request):
     return render(request, "RegisterPage.html")
