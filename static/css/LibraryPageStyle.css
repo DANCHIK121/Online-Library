@@ -1,0 +1,607 @@
+/* CatalogPageStyle.css - Стили для страницы каталога (Все книги) */
+/* Основана на MainPageStyle.css, цветовая схема сохранена строго */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8fafd; /* Светлый фон для всего сайта */
+    color: #1a2b3e;
+    line-height: 1.5;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* Шапка (полностью скопирована) */
+.header {
+    background-color: white;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.03);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #1f3a5f;
+}
+
+.logo i {
+    color: #2b6c5e; /* Зеленый из схемы */
+    font-size: 2rem;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    padding: 10px 22px;
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid #d0ddee;
+    color: #1f3a5f;
+}
+
+.btn-outline:hover {
+    background: #f0f5fc;
+    border-color: #a5b9d0;
+}
+
+.btn-primary {
+    background: #2b6c5e;
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #1f5347;
+}
+
+.btn-large {
+    padding: 14px 32px;
+    font-size: 1.1rem;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    background: #f0f5fc;
+    color: #1f3a5f;
+    border: 1px solid #e2e8f0;
+    width: 100%;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.btn-small:hover {
+    background: #e2eaf5;
+}
+
+/* Специфичные стили для страницы каталога */
+
+/* Заголовок каталога */
+.catalog-header {
+    padding: 40px 0 20px;
+    background: white;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.catalog-header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1a2b3e;
+    margin-bottom: 10px;
+}
+
+.catalog-header h1 i {
+    color: #2b6c5e;
+    margin-right: 10px;
+}
+
+.catalog-subtitle {
+    color: #4a607a;
+    font-size: 1.1rem;
+}
+
+/* Панель инструментов каталога */
+.catalog-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 0 40px;
+    flex-wrap: wrap;
+    gap: 20px;
+    background: white;
+    padding: 20px 25px;
+    border-radius: 60px;
+    border: 1px solid #edf2f7;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafd;
+    padding: 10px 20px;
+    border-radius: 40px;
+    flex: 1;
+    max-width: 500px;
+    border: 1px solid #e2e8f0;
+}
+
+.search-bar i {
+    color: #7f95b0;
+}
+
+.search-bar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 0.95rem;
+    color: #1a2b3e;
+}
+
+.search-bar input::placeholder {
+    color: #a0b8cf;
+}
+
+.filter-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.filter-label {
+    color: #4a607a;
+    font-weight: 500;
+}
+
+.filter-select {
+    padding: 10px 25px 10px 15px;
+    border-radius: 40px;
+    border: 1px solid #e2e8f0;
+    background: #f8fafd;
+    color: #1a2b3e;
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234a607a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+/* Основная сетка книг (полностью скопирована с главной) */
+.all-books {
+    padding: 20px 0 70px;
+    background: #f8fafd;
+}
+
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.book-card {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid #eef2f6;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 260px;
+}
+
+.book-card:hover {
+    box-shadow: 0 15px 30px -10px rgba(0,0,0,0.15);
+    transform: translateY(-5px);
+}
+
+.book-cover {
+    height: 280px;
+    background: linear-gradient(145deg, #e6eef7, #d9e2ec);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7b95ad;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Бейджи для книг */
+.book-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+}
+
+.badge-new {
+    background: #2b6c5e;
+    color: white;
+}
+
+.badge-bestseller {
+    background: #c9773b;
+    color: white;
+}
+
+.badge-limited {
+    background: #1f3a5f;
+    color: white;
+}
+
+.book-info {
+    padding: 24px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.book-info h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #1a2b3e;
+    line-height: 1.4;
+
+    /* Ограничение названия до 2 строк */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 3.2rem;
+}
+
+.author {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    font-weight: 500;
+
+    /* Ограничение автора до 1 строки */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.description {
+    color: #4a607a;
+    font-size: 0.9rem;
+    margin-bottom: 18px;
+    line-height: 1.5;
+    flex: 1;
+
+    /* Ограничение описания до 3 строк */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 4.2rem;
+}
+
+.book-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    font-size: 0.9rem;
+    padding: 10px 0;
+    border-top: 1px solid #edf2f7;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.year {
+    color: #7f95b0;
+    font-weight: 600;
+    background: #f0f5fc;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+
+.status i {
+    font-size: 0.9rem;
+}
+
+.status.available {
+    color: #2b6c5e;
+    background: rgba(43, 108, 94, 0.1);
+}
+
+.status.limited {
+    color: #c9773b;
+    background: rgba(201, 119, 59, 0.1);
+}
+
+.status.out {
+    color: #b91c1c;
+    background: rgba(185, 28, 28, 0.1);
+}
+
+.status.expected {
+    color: #1f3a5f;
+    background: rgba(31, 58, 95, 0.1);
+}
+
+.language-wrapper {
+    margin-bottom: 10px;
+}
+
+.language-badge {
+    display: inline-block;
+    background: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    color: #4a607a;
+}
+
+/* Пагинация (новая) */
+.pagination {
+    margin: 40px 0 20px;
+    text-align: center;
+}
+
+.step-links {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 10px 20px;
+    border-radius: 40px;
+    border: 1px solid #eef2f6;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #f8fafd;
+    color: #1f3a5f;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid #e2e8f0;
+}
+
+.pagination-btn:hover {
+    background: #2b6c5e;
+    color: white;
+    border-color: #2b6c5e;
+}
+
+.current-page {
+    color: #1f3a5f;
+    font-weight: 500;
+    padding: 0 10px;
+}
+
+/* Сообщение, если книг нет */
+.no-books {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 50px;
+    background: white;
+    border-radius: 30px;
+    border: 2px dashed #e2e8f0;
+}
+
+.no-books i {
+    font-size: 4rem;
+    color: #a0b8cf;
+    margin-bottom: 20px;
+}
+
+.no-books p {
+    color: #64748b;
+    font-size: 1.2rem;
+}
+
+/* Счетчик книг */
+.books-count {
+    text-align: center;
+    margin-top: 20px;
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* Подвал (скопирован) */
+.footer {
+    background: white;
+    border-top: 1px solid #eef2f6;
+    padding: 30px 0;
+    margin-top: auto;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-info p {
+    color: #62778e;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.footer-links a {
+    color: #405e7c;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+    color: #2b6c5e;
+}
+
+.footer-links i {
+    font-size: 1.2rem;
+}
+
+/* Адаптивность (полностью скопирована, добавлены стили для пагинации и тулбара) */
+@media (max-width: 1400px) {
+    .books-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1100px) {
+    .books-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .catalog-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        border-radius: 30px;
+    }
+
+    .search-bar {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 800px) {
+    .auth-buttons {
+        gap: 8px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 700px) {
+    .books-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .book-card {
+        max-width: 100%;
+    }
+
+    .book-cover {
+        height: 300px;
+    }
+}
+
+@media (max-width: 500px) {
+    .header-container {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 0;
+        gap: 15px;
+    }
+
+    .container {
+        padding: 0 20px;
+    }
+
+    .catalog-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .filter-buttons {
+        flex-wrap: wrap;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .step-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

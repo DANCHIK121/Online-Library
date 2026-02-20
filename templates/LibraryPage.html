@@ -4,87 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Онлайн Библиотека | Добро пожаловать</title>
+    <title>Онлайн Библиотека | Каталог книг</title>
     <!-- Подключение иконки -->
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
     <!-- Подключение CSS для Django -->
-    <link rel="stylesheet" href="{% static 'css/MainPageStyle.css' %}">
+    <link rel="stylesheet" href="{% static 'css/LibraryPageStyle.css' %}">
     <!-- Font Awesome для иконок -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div class="wrapper">
-        <!-- Шапка с кнопкой входа справа -->
+        <!-- Шапка с кнопкой входа справа (без изменений) -->
         <header class="header">
             <div class="container header-container">
-                <div class="logo">
+                <a href="/home/" class="logo" style="text-decoration: none;">
                     <i class="fas fa-book-open"></i>
                     <span>Онлайн Библиотека</span>
-                </div>
-                <div class="auth-buttons">
-                    <a href="/registration_page/" class="btn btn-outline"><i class="fas fa-user-plus"></i> Регистрация</a>
-                    <a href="/login_page/" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Войти</a>
-                    <a href="/profile_page/" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Профиль</a>
-                </div>
+                </a>
             </div>
         </header>
 
-        <!-- Главный экран (Hero) с призывом к действию -->
-        <section class="hero">
-            <div class="container hero-container">
-                <div class="hero-content">
-                    <h1>Добро пожаловать в библиотеку</h1>
-                    <p class="hero-subtitle">Тысячи книг ждут вас. Читайте, вдохновляйтесь, открывайте новое.</p>
-                    <div class="hero-buttons">
-                        <a href="/library_page/" class="btn btn-large btn-primary"><i class="fas fa-search"></i> Начать поиск книг</a>
-                        <a href="/registration_page/" class="btn btn-large btn-outline"><i class="fas fa-id-card"></i> Оформить читательский билет</a>
-                    </div>
-                    <p class="hero-stats">
-                        <span><i class="fas fa-book"></i> 15 000+ книг</span>
-                        <span><i class="fas fa-users"></i> 3 200 читателей</span>
-                        <span><i class="fas fa-calendar"></i> С 1958 года</span>
-                    </p>
-                </div>
-                <div class="hero-image">
-                    <i class="fas fa-book-reader"></i>
-                </div>
+        <!-- Заголовок страницы каталога -->
+        <section class="catalog-header">
+            <div class="container">
+                <h1><i class="fas fa-books"></i> Каталог всех книг</h1>
             </div>
         </section>
 
-        <!-- Блок "О библиотеке" (кратко) -->
-        <section class="about">
+        <!-- Основной контент: Все книги -->
+        <section class="all-books">
             <div class="container">
-                <h2 class="section-title">О нашей библиотеке</h2>
-                <div class="about-grid">
-                    <div class="about-card">
-                        <i class="fas fa-globe"></i>
-                        <h3>Электронный каталог</h3>
-                        <p>Ищите книги по названию, автору или жанру. Всегда актуальная информация о наличии.</p>
+                <!-- Строка поиска и фильтрации (опционально, для красоты) -->
+                <div class="catalog-toolbar">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Поиск по названию или автору...">
                     </div>
-                    <div class="about-card">
-                        <i class="fas fa-mobile-alt"></i>
-                        <h3>Личный кабинет</h3>
-                        <p>Следите за сроком возврата, продлевайте книги онлайн, получайте уведомления.</p>
-                    </div>
-                    <div class="about-card">
-                        <i class="fas fa-gift"></i>
-                        <h3>Бесплатно</h3>
-                        <p>100% бесплатное обслуживание для всех.</p>
+                    <div class="filter-buttons">
+                        <span class="filter-label">Сортировка:</span>
+                        <select class="filter-select">
+                            <option>По названию</option>
+                            <option>По автору</option>
+                            <option>Сначала новые</option>
+                            <option>Сначала старые</option>
+                        </select>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- Новинки книг (главный блок) -->
-        <section class="new-arrivals">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title"><i class="fas fa-star"></i> Новые поступления</h2>
-                    <a href="/library_page/" class="view-all">Смотреть все новинки <i class="fas fa-arrow-right"></i></a>
-                </div>
-
-                <!-- Исправленная сетка книг -->
+                <!-- Сетка всех книг (используем books из контекста) -->
                 <div class="books-grid">
                     {% for book in books %}
                     <div class="book-card">
@@ -95,7 +63,7 @@
                                 <i class="fas fa-book"></i>
                             {% endif %}
 
-                            <!-- Бейджи для книг (добавлены) -->
+                            <!-- Бейджи для книг -->
                             {% if book.is_new %}
                                 <span class="book-badge badge-new">Новинка</span>
                             {% endif %}
@@ -110,7 +78,7 @@
                             <h3 title="{{ book.title }}">{{ book.title }}</h3>
                             <p class="author" title="{{ book.author }}">{{ book.author }}</p>
                             <p class="description" title="{{ book.description|default:'Описание отсутствует' }}">
-                                {{ book.description|default:"Описание отсутствует"|truncatechars:100 }}
+                                {{ book.description|default:"Описание отсутствует"|truncatechars:120 }}
                             </p>
                             <div class="book-meta">
                                 {% if book.year %}
@@ -151,14 +119,14 @@
                             </div>
 
                             <!-- Язык книги (если не русский) -->
-                            {% if book.language != 'ru' %}
+                            {% if book.language and book.language != 'ru' %}
                                 <div class="language-wrapper">
                                     <span class="language-badge">{{ book.get_language_display }}</span>
                                 </div>
                             {% endif %}
 
                             <a href="/live_book_page/?book_title={{ book.title|urlencode }}" class="btn btn-small">
-                                <i class="fas fa-info-circle"></i> Читать
+                                Читать
                             </a>
                         </div>
                     </div>
@@ -173,21 +141,7 @@
             </div>
         </section>
 
-        <!-- Секция с преимуществами и призывом зарегистрироваться -->
-        <section class="cta-section">
-            <div class="container cta-container">
-                <div class="cta-content">
-                    <h2>Станьте нашим читателем</h2>
-                    <p>Всего 5 минут — и вы сможете бронировать книги, продлевать срок и получать персональные рекомендации.</p>
-                    <a href="/registration_page/" class="btn btn-large btn-primary"><i class="fas fa-id-card"></i> Оформить онлайн</a>
-                </div>
-                <div class="cta-image">
-                    <i class="fas fa-smile"></i>
-                </div>
-            </div>
-        </section>
-
-        <!-- Подвал -->
+        <!-- Подвал (без изменений) -->
         <footer class="footer">
             <div class="container footer-container">
                 <div class="footer-info">
@@ -196,26 +150,5 @@
             </div>
         </footer>
     </div>
-
-    <!-- Небольшой дополнительный стиль для счетчика книг -->
-    <style>
-        .books-count {
-            text-align: center;
-            margin-top: 20px;
-            color: #64748b;
-            font-size: 0.9rem;
-        }
-
-        .language-wrapper {
-            margin-bottom: 10px;
-        }
-
-        /* Улучшенные подсказки при наведении */
-        .book-info h3[title],
-        .author[title],
-        .description[title] {
-            cursor: help;
-        }
-    </style>
 </body>
 </html>

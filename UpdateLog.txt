@@ -37,8 +37,10 @@ Updates of release 0.1:
 
 19) Sending emails during user registration is configured.
 
-20) Added dynamic display of available books on the main page. (*)
+20) Added dynamic display of available books on the main page.
 
-21) Added the display of two user phone numbers on the profile page.
+21) Added a page for viewing all available books on the website.
 
-22) Added a link to the website's homepage by clicking the website's logo in the upper-left corner.
+22) Added the display of two user phone numbers on the profile page.
+
+23) Added a link to the website's homepage by clicking the website's logo in the upper-left corner.

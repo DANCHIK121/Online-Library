@@ -36,6 +36,15 @@ def personal_account_page(request):
     request.session['last_visit'] = str(datetime.datetime.now()).split(".")[0]
     return render(request, 'PersonalAccountPage.html', {'user': user})
 
+def library_page(request):
+    books = Book.objects.all()
+
+    context = {
+        "books": books,
+    }
+
+    return render(request, "LibraryPage.html", context)
+
 def personal_data_page(request):
     return render(request, 'PersonalDataPage.html')
 
@@ -75,7 +84,15 @@ def admin_page(request):
 
 @login_required(login_url='/login_page/')
 def live_book_page(request):
-    needed_book = Book.objects.get(title="Преступление и наказание")
+    book_title = request.GET.get('book_title')
+
+    if not book_title:
+        return redirect('home')
+
+    try:
+        needed_book = Book.objects.get(title=book_title)
+    except Book.DoesNotExist:
+        return redirect('home')
 
     pdf_url = None
     if needed_book.book_file and hasattr(needed_book.book_file, 'url'):
